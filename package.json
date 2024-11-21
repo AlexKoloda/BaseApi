@@ -2,7 +2,7 @@
   "name": "serverapi",
   "version": "0.0.1",
   "description": "base crud",
-  "type": "module",
+  "type": "commonjs",
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^16.11.10",
