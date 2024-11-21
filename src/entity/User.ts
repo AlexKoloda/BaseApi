@@ -18,5 +18,5 @@ export class User {
   password: string;
 
   @Column()
-  dateBirth: number;
+  dateBirth: string;
 }
