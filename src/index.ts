@@ -1,22 +1,27 @@
-import { AppDataSource } from "./db/dataSource";
+import { AppDataSource } from "./db/data-source";
 import * as express from "express";
-/* import allRoutes from "./routes/routes"; */
+import router from "./routes/user-routes";
 
 const app = express();
+const PORT = 3000;
+
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//app.use(allRoutes);
+
 
 AppDataSource.initialize()
 
   .then(async () => {
     console.log("Connected to db");
+    app.use('/api', router);
   })
 
   .catch((error) => console.log(error));
 
-app.listen(3000, function () {
-  console.log("Сервер ожидает подключения...");
+app.listen(PORT, () => {
+  console.log(`Сервер ожидает подключения на порту ${PORT}`);
 });
 
 
@@ -25,6 +30,7 @@ app.listen(3000, function () {
 
 
 // TODO Автоматический шаблон, удалить после того, как разберусь с созданием Юзера.
+
 /* AppDataSource.initialize().then(async () => {
 
     console.log("Inserting a new user into the database...")
