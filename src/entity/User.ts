@@ -20,3 +20,5 @@ export class User {
   @Column()
   dateBirth: string;
 }
+
+export default User;
