@@ -11,11 +11,10 @@ export class User {
 
   @Column()
   lastName: string;
-
-  @Column()
+  // TODO Переделать валидацию email
+  @Column({ unique: true })
   @IsNotEmpty()
   @IsEmail()
-  @Index({ unique: true })
   email: string;
 
   @Column({ select: false })
