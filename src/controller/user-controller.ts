@@ -1,57 +1,47 @@
-import User from "../entity/User";
+import { Request, Response } from "express";
 import userService from "../service/user-service";
 
-// TODO Сделать типизацию req, res
-/* interface reqType {
-  firstName: string,
-  lastName: string,
-  email: string, 
-  password: string,
-  dateBirth: string,
-}
- */
-
 class UserController {
-  async createUser(req, res) {
+  async createUser(req: Request, res: Response) {
     try {
       const newUser = await userService.createUser(req.body);
-      res.json(newUser);
+      res.status(201).json(newUser);
     } catch (err) {
       res.status(500).json(err);
     }
   }
 
-  async getUsers(req, res) {
+  async getUsers(req: Request, res: Response) {
     try {
       const users = await userService.getUsers();
-      res.json(users);
+      res.status(200).json(users);
     } catch (err) {
       res.status(500).json(err);
     }
   }
 
-  async getUser(req, res) {
+  async getUser(req: Request, res: Response) {
     try {
       const user = await userService.getUser(req.params.id);
-      return res.json(user);
+      res.status(200).json(user);
     } catch (err) {
       res.status(500).json(err.message);
     }
   }
 
-  async updateUser(req, res) {
+  async updateUser(req: Request, res: Response) {
     try {
       const updatedUser = await userService.updateUser(req.body);
-      return res.json(updatedUser);
+      res.status(200).json(updatedUser);
     } catch (err) {
       res.status(500).json(err.message);
     }
   }
 
-  async deleteUser(req, res) {
+  async deleteUser(req: Request, res: Response) {
     try {
       const deletedUser = await userService.deleteUser(req.params.id);
-      return res.json(deletedUser);
+      res.status(200).json(deletedUser);
     } catch (err) {
       res.status(500).json(err.message);
     }
