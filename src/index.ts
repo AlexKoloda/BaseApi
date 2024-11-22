@@ -1,6 +1,6 @@
 import { AppDataSource } from "./db/data-source";
 import * as express from "express";
-import router from "./User/routes/user-routes";
+import userRouter from "./User/routes/user-routes";
 
 const app = express();
 const PORT = 3000;
@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 AppDataSource.initialize()
 
   .then(async () => {
-    app.use("/api", router);
+    app.use("/api", userRouter);
     console.log("Connected to db");
   })
 

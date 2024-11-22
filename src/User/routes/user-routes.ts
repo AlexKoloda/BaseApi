@@ -1,11 +1,11 @@
 import { Router } from "express";
 import UserController from "../controller/user-controller";
 
-const router = Router();
+const userRouter = Router();
 
-router.get("/user", UserController.getUsers);
-router.get("/user/:id", UserController.getUser);
-router.put("/user", UserController.updateUser);
-router.delete("/user/:id", UserController.deleteUser);
+userRouter.get("/user", UserController.getUsers);
+userRouter.get("/user/:id", UserController.getUser);
+userRouter.put("/user", UserController.updateUser);
+userRouter.delete("/user/:id", UserController.deleteUser);
 
-export default router;
+export default userRouter;
