@@ -4,7 +4,11 @@ import userService from "../../User/service/user-service";
 
 class authService {
   async registration(user: CreateUserInterface) {
-    userService.createUser(user);
+    try {
+      return await userService.createUser(user);      
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
 
