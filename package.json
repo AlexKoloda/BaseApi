@@ -19,6 +19,7 @@
   },
   "scripts": {
     "start": "ts-node src/index.ts",
+    "go": "nodemon src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "typeorm:cli": "ts-node node_modules/typeorm/cli.js",
     "migration:generate": "npm run typeorm:cli -- migration:generate -d src/db/migrations -n",
