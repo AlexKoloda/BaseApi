@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { IsEmail, IsNotEmpty } from "class-validator";
+import { Entity, PrimaryGeneratedColumn, Column, Index } from "typeorm";
 
 @Entity()
 export class User {
@@ -12,9 +13,12 @@ export class User {
   lastName: string;
 
   @Column()
+  @IsNotEmpty()
+  @IsEmail()
+  @Index({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column()
