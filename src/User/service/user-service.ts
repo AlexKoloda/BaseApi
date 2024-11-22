@@ -3,7 +3,7 @@ import { CreateUserInterface, GetUserInterface } from "../../types/types";
 
 class UserService {
   async createUser(user: CreateUserInterface) {
-    const newUser = await userRepository.create(user);
+    const newUser = await userRepository.save(user);
     return newUser;
   }
 
