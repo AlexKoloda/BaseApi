@@ -12,8 +12,9 @@ class UserController {
   }
 
   async getUser(req: Request, res: Response) {
+      const {id} = req.params;
     try {
-      const user = await userService.getUser(Number(req.params.id));
+      const user = await userService.getUser(Number(id));
       res.status(200).json(user);
     } catch (err) {
       res.status(500).json(err.message);
@@ -30,8 +31,9 @@ class UserController {
   }
 
   async deleteUser(req: Request, res: Response) {
+      const {id} = req.params;
     try {
-      const deletedUser = await userService.deleteUser(Number(req.params.id));
+      const deletedUser = await userService.deleteUser(Number(id));
       res.status(200).json(deletedUser);
     } catch (err) {
       res.status(500).json(err.message);
