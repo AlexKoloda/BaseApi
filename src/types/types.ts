@@ -1,5 +1,4 @@
 export interface CreateUserInterface {
-  id: number;
   firstName: string;
   lastName: string;
   email: string;
