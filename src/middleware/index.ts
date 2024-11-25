@@ -1,11 +1,26 @@
-import { ExtractJwt, Strategy } from "passport-jwt"
-import { userRepository } from "../User/repository/user-repository";
+import { NextFunction, Request, Response } from "express";
+import * as dotenv from "dotenv";
+dotenv.config();
 
-const secretKey = 'secret';
-const extract = ExtractJwt.fromAuthHeaderAsBearerToken();
+const jwt = require("jsonwebtoken");
+const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.headers["authorization"].split(" ")[1];
 
-const jwtStrategy = new Strategy ({ secretOrKey: secretKey, jwtFromRequest: extract }, (jwt_payload, done) => {
-    const user = userRepository.findOneBy({email: jwt_payload.email})
-      return user ? done(null, user) : done(null, false);
-     }
-);
+  if (token === null) {
+    return res.status(401);
+  }
+
+  return jwt.verify(
+    token,
+    process.env.TOKEN_SECRET as string,
+    (err: any, user: any) => {
+      if (err) {
+        return res.status(403);
+      }
+      req.user = user;
+      next();
+    }
+  );
+};
+
+export default authenticateToken;
