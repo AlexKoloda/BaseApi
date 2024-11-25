@@ -18,7 +18,7 @@ export const AppDataSource = new DataSource({
 AppDataSource.initialize()
 
   .then(async () => {
-    console.log("Connected to db");
+    console.log("Подключено к базе данных");
   })
 
   .catch((error) => console.log(error));
