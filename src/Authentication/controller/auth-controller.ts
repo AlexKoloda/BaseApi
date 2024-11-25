@@ -1,16 +1,13 @@
 import { Request, Response } from "express";
 import authService from "../service/auth-service";
-import { sign } from "jsonwebtoken";
+import token from "../util/token";
 
 class AuthController {
   async registration(req: Request, res: Response) {
     try {
       const newUser = await authService.registration(req.body);
-      const currentToken = this.createJwt(newUser.email);
-      res
-        .status(201)
-        .json(newUser)
-        .setHeader("Authorization", "Bearer" + currentToken);
+      const currentToken = token.createJwt(newUser.email);
+      res.status(201).setHeader("authorization", "Bearer" + currentToken).json(newUser);
     } catch (err) {
       res.status(500).json(err);
     }
@@ -20,18 +17,12 @@ class AuthController {
     try {
       const { email, password } = req.body;
       const user = await authService.login(email, password);
-      const currentToken = this.createJwt(email);
-      res
-        .status(200)
-        .json(user)
-        .setHeader("Authorization", "Bearer" + currentToken);
+      const currentToken = token.createJwt(email);
+      res.status(200).json({user: user, token: currentToken});
     } catch (err) {
       res.status(500).json(err);
+      console.log(err);
     }
-  }
-
-  private createJwt(email: string) {
-    const token = sign({ email }, "secret", { expiresIn: "24h" });
   }
 }
 
