@@ -22,7 +22,8 @@
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.3.20",
-    "types": "file:../../../../passport-jwt"
+    "types": "file:../../../../passport-jwt",
+    "yup": "^1.4.0"
   },
   "scripts": {
     "start": "ts-node src/index.ts",
