@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import authService from "../service/auth-service";
-import token from "../util/token";
+import token from "../../util/token";
 
 class AuthController {
   async registration(req: Request, res: Response) {
