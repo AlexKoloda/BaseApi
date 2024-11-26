@@ -11,7 +11,6 @@ export interface GetUserInterface {
   firstName: string;
   lastName: string;
   email: string;
-  // TODO Скрыть пароль
   password: string;
   dateBirth: string;
 }
