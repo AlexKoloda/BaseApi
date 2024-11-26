@@ -1,26 +1,25 @@
 import { NextFunction, Request, Response } from "express";
 import * as dotenv from "dotenv";
+import { JwtPayload, verify } from "jsonwebtoken";
+import userService from "../services/user-service";
+import { CustomError, NotValidDataError } from "../util/custom-errors";
 dotenv.config();
 
-const jwt = require("jsonwebtoken");
-const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers["authorization"].split(" ")[1];
+const authenticateToken = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.headers["authorization"];
 
-  if (token === null) {
-    return res.status(401);
-  }
-
-  return jwt.verify(
-    token,
-    process.env.TOKEN_SECRET as string,
-    (err: any, user: any) => {
-      if (err) {
-        return res.status(403);
-      }
-      req.user = user;
-      next();
+    if (!token) {
+        throw new CustomError('Not authorization', 401);
     }
-  );
+    const decoded = verify(token.split(" ")[1], process.env.TOKEN_SECRET);
+    const user = await userService.getUser((decoded as JwtPayload).id);
+     if (user) {
+      next();
+     } 
+  } catch (err) {
+    next(err);
+  }
 };
 
 export default authenticateToken;
