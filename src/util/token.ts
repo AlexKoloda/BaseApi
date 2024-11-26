@@ -1,6 +1,6 @@
 import { sign } from "jsonwebtoken";
-import * as dotenv from "dotenv";
-dotenv.config();
+import { config } from "dotenv";
+config();
 
 
 const createJwt = (email: string) => {
