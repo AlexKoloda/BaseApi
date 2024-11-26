@@ -7,5 +7,4 @@ const mainRouter = Router();
 
 mainRouter.use("/auth", authRouter);
 mainRouter.use("/user", authenticateToken, userRouter);
-
 export default mainRouter;
