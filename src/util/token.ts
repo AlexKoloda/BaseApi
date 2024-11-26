@@ -2,17 +2,15 @@ import { sign } from "jsonwebtoken";
 import { config } from "dotenv";
 config();
 
-
-const createJwt = (email: string) => {
-    try {
-      const token = sign({ email }, process.env.TOKEN_SECRET, {
-        expiresIn: "24h",
-      });
-      return token;
-    } catch (err) {
-      console.log(err);
-    }
+const createJwt = (id: number) => {
+  try {
+    const token = sign({ id }, process.env.TOKEN_SECRET, {
+      expiresIn: process.env.EXP,
+    });
+    return token;
+  } catch (err) {
+    console.log(err);
   }
-
+};
 
 export default createJwt;
