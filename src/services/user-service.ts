@@ -3,28 +3,27 @@ import { CreateUserInterface, GetUserInterface } from "../types/types";
 
 class UserService {
   async createUser(user: CreateUserInterface) {
-    const newUser = await userRepository.save(user);
-    return newUser;
+    return await userRepository.save(user);     
   }
 
   async getUsers(): Promise<GetUserInterface[]> {
-    const users = await userRepository.find();
-    return users;
+    return await userRepository.find();
+
   }
 
   async getUser(userId: number) {
-    const user = await userRepository.findOneBy({ id: userId });
-    return user;
+    return await userRepository.findOneBy({ id: userId });
+
   }
 
   async updateUser(user: GetUserInterface) {
-    const updatedUser = await userRepository.update(user.id, user);
-    return updatedUser;
+    return await userRepository.update(user.id, user);
+  
   }
 
   async deleteUser(userId: number) {
-    const user = await userRepository.delete(userId);
-    return user;
+    return await userRepository.delete(userId);
+ 
   }
 }
 
