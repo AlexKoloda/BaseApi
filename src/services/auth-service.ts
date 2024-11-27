@@ -21,7 +21,11 @@ class authService {
         dateBirth: true,
       },
     });
-}
+  }
+
+  excludePassword = (user: CreateUserInterface) => {
+    return delete user.password;
+  };
 }
 
 export default new authService();

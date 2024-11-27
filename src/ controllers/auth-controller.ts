@@ -16,7 +16,7 @@ class AuthController {
       req.body.password = generatePassword(req.body.password);
       const newUser = await authService.registration(req.body);
       const currentToken = createJwt(newUser.id);
-      delete newUser.password;
+      authService.excludePassword(newUser);
       res.status(201).json({ user: newUser, token: currentToken });
     } catch (err) {
       next(err);
@@ -36,7 +36,7 @@ class AuthController {
         throw new NotFound("Not found user");
       }
       const currentToken = createJwt(user.id);
-      delete user.password;
+      authService.excludePassword(user);
       res.status(200).json({ user: user, token: currentToken });
     } catch (err) {
       next(err);
