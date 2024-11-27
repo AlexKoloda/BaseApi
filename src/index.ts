@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));      
 app.use("/", mainRouter);
 
-app.use((err:Error, req, res, next) => {
+app.use((err:Error, _req, res, _next) => {
 
   if (err instanceof CustomError) {
     return res.status(err.status).json({message: err.message, data: err.payload})
