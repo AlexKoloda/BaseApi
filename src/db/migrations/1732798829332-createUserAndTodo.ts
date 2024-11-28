@@ -1,9 +1,17 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateUser1732604815650 implements MigrationInterface {
-    name = 'CreateUser1732604815650'
+export class createUserAndTodo1732798829332 implements MigrationInterface {
+    name = 'createUserAndTodo1732798829332'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`
+            CREATE TABLE "todo" (
+                "id" SERIAL NOT NULL,
+                "text" character varying NOT NULL,
+                "isCompleted" boolean NOT NULL,
+                CONSTRAINT "PK_d429b7114371f6a35c5cb4776a7" PRIMARY KEY ("id")
+            )
+        `);
         await queryRunner.query(`
             CREATE TABLE "user" (
                 "id" SERIAL NOT NULL,
@@ -21,6 +29,9 @@ export class CreateUser1732604815650 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
             DROP TABLE "user"
+        `);
+        await queryRunner.query(`
+            DROP TABLE "todo"
         `);
     }
 
