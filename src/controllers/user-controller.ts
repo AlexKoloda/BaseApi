@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import userService from "../services/user-service";
-import { BadParams, NotFound } from "../util/custom-errors";
+import {NotFound } from "../util/custom-errors";
 
 class UserController {
   async getUsers(req: Request, res: Response, next: NextFunction) {
@@ -24,24 +24,27 @@ class UserController {
       next(err);
     }
   }
-
-  async updateUser(req: Request, res: Response, next: NextFunction) {
+  
+  async deleteUser(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
     try {
-      const updatedUser = await userService.updateUser(req.body);
-      res.status(200).json(updatedUser);
+      const deletedUser = await userService.getUser(Number(id));
+    if (!deletedUser) {
+      throw new NotFound("User not found");
+    }
+      userService.deleteUser(Number(id));
+      res.status(200).json("User delete");
     } catch (err) {
       next(err);
     }
   }
 
-  async deleteUser(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
+  async updateUser(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.body;
     try {
-      const deletedUser = await userService.deleteUser(Number(id));
-      if (!deletedUser) {
-        throw new NotFound("User not found");
-      }
-      res.status(200).json(deletedUser);
+      await userService.updateUser(req.body);
+      const updatedUser = await userService.getUser(Number(id));
+      res.status(200).json(updatedUser);
     } catch (err) {
       next(err);
     }
