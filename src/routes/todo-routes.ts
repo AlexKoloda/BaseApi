@@ -3,6 +3,7 @@ import todoController from "../controllers/todo-controller";
 
 const todoRouter = Router();
 
+todoRouter.get('/:create', todoController.getFilteredTodos);
 todoRouter.get('/:all', todoController.getFilteredTodos);
 todoRouter.get('/:id', todoController.getCurrentTodo);
 todoRouter.patch('/', todoController.updateTodo);
