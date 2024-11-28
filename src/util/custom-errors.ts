@@ -3,33 +3,33 @@ import { StatusCodes } from "http-status-codes";
 type PayloadType = {
   paths: {
     path: string;
-    message?: string; 
-  }[]
-}
+    message?: string;
+  }[];
+};
 
 type MessageType = {
-
   messages: {
     message: string;
-  }
-
-}
-
+  };
+};
 
 export class CustomError extends Error {
   status: number;
   payload: Record<string, unknown> | undefined;
 
-  constructor(message: any, status: number, payload?: Record<string, unknown>) {
+  constructor(message: string, status: number, payload?: Record<string, unknown>) {
     super(message);
     this.status = status;
     this.payload = payload;
   }
-};
+}
 
 export class NotValidType extends CustomError {
-  constructor(message: string, payload?: PayloadType) {
-    super(message, StatusCodes.UNAUTHORIZED, {type: 'validation', ...payload, });
+  constructor(message: any, payload?: PayloadType) {
+    super(message, StatusCodes.BAD_REQUEST, {
+      type: "validation",
+      ...payload,
+    });
   }
 }
 
@@ -50,5 +50,3 @@ export class NotFound extends CustomError {
     super(message, StatusCodes.NOT_FOUND, payload);
   }
 }
-
-
