@@ -1,39 +1,37 @@
 import { StatusCodes } from "http-status-codes";
 
-type PayloadType = {
+export type ErrorMessagesPaths = {
   paths: {
     path: string;
     message?: string;
   }[];
 };
 
-type MessageType = {
-  messages: {
-    message: string;
-  };
-};
-
 export class CustomError extends Error {
   status: number;
   payload: Record<string, unknown> | undefined;
 
-  constructor(message: string, status: number, payload?: Record<string, unknown>) {
+  constructor(
+    message: string,
+    status: number,
+    payload?: Record<string, unknown>
+  ) {
     super(message);
     this.status = status;
     this.payload = payload;
   }
 }
 
-export class NotValidType extends CustomError {
-  constructor(message: any, payload?: PayloadType) {
-    super(message, StatusCodes.BAD_REQUEST, {
+export class ValidationFailure extends CustomError {
+  constructor(payload?: ErrorMessagesPaths) {
+    super("Validate error", StatusCodes.BAD_REQUEST, {
       type: "validation",
       ...payload,
     });
   }
 }
 
-export class NotValidDataError extends CustomError {
+export class UnAuthorized extends CustomError {
   constructor(message: string, payload?: Record<string, unknown>) {
     super(message, StatusCodes.UNAUTHORIZED, payload);
   }
