@@ -1,15 +1,17 @@
+import { ValidationError } from "yup";
+import { ErrorMessagesPaths } from "./custom-errors";
 
-export const readError = (err) => {
+export const parseValidationErrors = (err: ValidationError): ErrorMessagesPaths=> {
+  const validErrors = err.inner;
 
-  const errors = err.errors;
-  const message = [];
-
-
-  for ( let errorMessage of errors ) {
-     message.push(errorMessage)
+  if (!validErrors) {
+    return;
   }
- 
-  return {
-    message : message,
-  };
-}
+  const errors = [];
+
+  for (let errorMessage of validErrors) {
+    errors.push({ path: errorMessage.path, message: errorMessage.message });
+  }
+
+  return { paths: errors };
+};
