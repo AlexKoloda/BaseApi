@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { string, object, number, ValidationError, tuple } from "yup";
 import { NotValidType } from "../util/custom-errors";
+import { readError } from "../util/errorReader";
 
 export const userSchema = object({
   firstName: string().min(1, "Name must be more than 1 characters").required(),
@@ -24,13 +25,16 @@ export const validate = (schema) => async (req: Request, res:Response, next:Next
     await schema.validate(req.body, { abortEarly: false });
     next();
   } catch (err) {
-      if (err instanceof ValidationError) {
-        
-        next(new NotValidType(err.message, {paths: [{path: 'wwww'}]}))
+    if (err instanceof ValidationError) {
+
+        const customError = readError(err)
+        console.log(customError)
+        next(new NotValidType(customError.message))
         return
       }
-      next(err)
-    //res.status(500).json({ message: err.message });
+      next(err) 
+
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -38,10 +42,20 @@ export const validateId = (schema) => async (req: Request, res:Response, next:Ne
 
   try {
     await schema.validate(req.params);
-    return next();
+    next();
   } catch (err) {
-    throw new NotValidType(err.message , err.path)
+    
+    if (err instanceof ValidationError) {
+
+    const customError = readError(err)
+    console.log(customError)
+    next(new NotValidType(customError.message))
+    return
   }
+  next(err) 
+
+res.status(500).json({ message: err.message });
+}
 };
 
 
