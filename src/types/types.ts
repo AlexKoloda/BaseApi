@@ -19,3 +19,9 @@ export interface UserSchema {
   password?: string;
   dateBirth?: string;
 }
+
+export interface TodoType {
+  id: number;
+  text: string;
+  isCompleted: boolean;
+}
