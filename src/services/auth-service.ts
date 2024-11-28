@@ -1,9 +1,9 @@
-import { CreateUserInterface } from "../types/types";
+import { CreateUserType } from "../types/types";
 import { userRepository } from "../repository/user-repository";
 import userService from "./user-service";
 
 class authService {
-  async registration(user: CreateUserInterface) {
+  async registration(user: CreateUserType) {
     return await userService.createUser(user);
   }
 
@@ -23,7 +23,7 @@ class authService {
     });
   }
 
-  excludePassword = (user: CreateUserInterface) => {
+  excludePassword = (user: CreateUserType) => {
     return delete user.password;
   };
 }

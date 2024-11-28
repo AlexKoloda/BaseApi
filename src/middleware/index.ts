@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { config } from "dotenv";
 import { JwtPayload, verify } from "jsonwebtoken";
 import userService from "../services/user-service";
-import { CustomError } from "../util/custom-errors";
+import { UnAuthorized } from "../util/custom-errors";
 config();
 
 export const authenticateToken = async (
@@ -14,7 +14,7 @@ export const authenticateToken = async (
     const token = req.headers["authorization"];
 
     if (!token) {
-      throw new CustomError("Not authorization", 401);
+      next(new UnAuthorized("Not authorization"));
     }
     const decoded = verify(token.split(" ")[1], process.env.TOKEN_SECRET);
     const user = await userService.getUser((decoded as JwtPayload).id);
@@ -22,6 +22,6 @@ export const authenticateToken = async (
       next();
     }
   } catch (err) {
-    next(err);
+    next(new UnAuthorized("Not authorization"));
   }
 };

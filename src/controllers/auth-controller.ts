@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import authService from "../services/auth-service";
 import createJwt from "../util/token";
-import { BadParams, NotFound, NotValidDataError } from "../util/custom-errors";
+import { BadParams, NotFound } from "../util/custom-errors";
 import { generateHashPassword } from "../util/hash-password";
 
 class AuthController {
