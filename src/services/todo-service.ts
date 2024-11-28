@@ -2,11 +2,11 @@ import { todoRepository } from "../repository/todo-repository";
 import { TodoType } from "../types/types";
 
 class TodoService {
-  async createTodo(todo: TodoType) {
+  async createTodo(todo: TodoType, /* userId: number */) {
     return await todoRepository.save(todo);
   }
 
-  async getFilteredTodo(): Promise<TodoType[]> {
+  async getFilteredTodo(filter: string): Promise<TodoType[]> {
     return await todoRepository.find();
   }
 
