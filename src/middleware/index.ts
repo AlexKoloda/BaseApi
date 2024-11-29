@@ -19,6 +19,7 @@ export const authenticateToken = async (
     const decoded = verify(token.split(" ")[1], process.env.TOKEN_SECRET);
     const user = await userService.getUser((decoded as JwtPayload).id);
     if (user) {
+      req.user=user;
       next();
     }
   } catch (err) {
