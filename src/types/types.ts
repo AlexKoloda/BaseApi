@@ -12,7 +12,7 @@ export type CreateUserType = Omit<UserInterface, "id">;
 
 export interface UserSchema {
   validate(body: UserInterface, arg1: { abortEarly: boolean }): unknown;
-  id?: string;
+  id?: number;
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -21,7 +21,7 @@ export interface UserSchema {
 }
 
 export interface TodoType {
-  id: number;
+  id?: number;
   text: string;
   isCompleted: boolean;
 }
