@@ -46,3 +46,5 @@ export const updateUserSchema = object({
     .required("Email must be require"),
   dateBirth: string().min(1).required("Field must be require"),
 });
+
+
