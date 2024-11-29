@@ -2,6 +2,7 @@ import * as express from "express";
 import mainRouter from "./routes";
 import { config } from "dotenv";
 import { CustomError } from "./util/custom-errors";
+import "./config"
 config();
 
 const app = express();
