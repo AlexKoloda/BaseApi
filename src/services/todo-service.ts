@@ -5,31 +5,33 @@ class TodoService {
   async createTodo(todo: TodoType) {
     return await todoRepository.save(todo);
   }
-
-  async getFilteredTodo(filter: string): Promise<TodoType[]> {
+  // TODO Сделать фильтрацию
+  getFilteredTodo(filter: string, userId: number): Promise<TodoType[]> {
     if (filter === "all") {
-    return await todoRepository.find({
+      return this.getUserTodo(userId);
+    }
+  }
 
- })
-/*     return await todoRepository.findBy( {
+  async getUserTodo(userId: number) {
+    return await todoRepository.find({
       where: {
-        id: 1,
-        isCompleted: filter === "complete",
-      }
-  }) */
-}
-}
+        user: {
+          id: userId,
+        },
+      },
+    });
+  }
 
   async getCurrentTodo(todoId: number) {
     return await todoRepository.findOneBy({ id: todoId });
   }
 
   async deleteTodo(todoId: number) {
-  await todoRepository.delete(todoId);
+    await todoRepository.delete(todoId);
   }
 
   async updateTodo(todo: TodoType) {
-  await  todoRepository.update(todo.id, todo);
+    await todoRepository.update(todo.id, todo);
   }
 }
 
