@@ -1,25 +1,35 @@
 import { todoRepository } from "../repository/todo-repository";
-import { TodoType } from "../types/types";
+import { TodoType, UserInterface } from "../types/types";
 
 class TodoService {
-  async createTodo(todo: TodoType, /* userId: number */) {
+  async createTodo(todo: TodoType) {
     return await todoRepository.save(todo);
   }
 
   async getFilteredTodo(filter: string): Promise<TodoType[]> {
-    return await todoRepository.find();
-  }
+    if (filter === "all") {
+    return await todoRepository.find({
+
+ })
+/*     return await todoRepository.findBy( {
+      where: {
+        id: 1,
+        isCompleted: filter === "complete",
+      }
+  }) */
+}
+}
 
   async getCurrentTodo(todoId: number) {
-    return await todoRepository.findOneBy({id: todoId})
+    return await todoRepository.findOneBy({ id: todoId });
   }
 
   async deleteTodo(todoId: number) {
-    await todoRepository.delete(todoId);
+  await todoRepository.delete(todoId);
   }
 
   async updateTodo(todo: TodoType) {
-    await todoRepository.update(todo.id, todo)
+  await  todoRepository.update(todo.id, todo);
   }
 }
 
