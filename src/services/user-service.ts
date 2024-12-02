@@ -1,14 +1,13 @@
-import { userRepository } from "../repository/user-repository";
-import { CreateUserType, UserInterface } from "../types/types";
+import { userRepository } from '../repository/user-repository';
+import { CreateUserType, UserInterface } from '../types/types';
 
 class UserService {
   async createUser(user: CreateUserType) {
-    return await userRepository.save(user);     
+    return await userRepository.save(user);
   }
 
   async getUsers(): Promise<UserInterface[]> {
     return await userRepository.find();
-
   }
 
   async getUser(userId: number) {
@@ -16,11 +15,11 @@ class UserService {
   }
 
   async updateUser(user: UserInterface) {
-  await userRepository.update(user.id, user);  
+    await userRepository.update(user.id, user);
   }
 
   async deleteUser(userId: number) {
-  await userRepository.delete(userId);
+    await userRepository.delete(userId);
   }
 }
 

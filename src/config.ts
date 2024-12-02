@@ -1,10 +1,9 @@
-import { TodoType, UserInterface } from "./types/types";
+import { TodoType, UserInterface } from './types/types';
 
 declare global {
   namespace Express {
     interface Request {
-      user?: UserInterface,
+      user?: UserInterface;
     }
   }
 }
-

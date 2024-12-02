@@ -1,4 +1,4 @@
-import { StatusCodes } from "http-status-codes";
+import { StatusCodes } from 'http-status-codes';
 
 export type ErrorMessagesPaths = {
   paths: {
@@ -24,8 +24,8 @@ export class CustomError extends Error {
 
 export class ValidationFailure extends CustomError {
   constructor(payload?: ErrorMessagesPaths) {
-    super("Validate error", StatusCodes.BAD_REQUEST, {
-      type: "validation",
+    super('Validate error', StatusCodes.BAD_REQUEST, {
+      type: 'validation',
       ...payload,
     });
   }

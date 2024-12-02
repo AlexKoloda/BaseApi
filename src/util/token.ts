@@ -1,6 +1,6 @@
-import { sign } from "jsonwebtoken";
-import { config } from "dotenv";
-import { BadParams } from "./custom-errors";
+import { sign } from 'jsonwebtoken';
+import { config } from 'dotenv';
+import { BadParams } from './custom-errors';
 config();
 
 const createJwt = (id: number) => {
@@ -10,7 +10,7 @@ const createJwt = (id: number) => {
     });
     return token;
   } catch (err) {
-    throw new BadParams("Ошибка авторизации")
+    throw new BadParams('Authenticate error');
   }
 };
 

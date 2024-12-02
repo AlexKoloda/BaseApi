@@ -1,8 +1,8 @@
-import * as express from "express";
-import mainRouter from "./routes";
-import { config } from "dotenv";
-import { CustomError } from "./util/custom-errors";
-import "./config"
+import * as express from 'express';
+import mainRouter from './routes';
+import { config } from 'dotenv';
+import { CustomError } from './util/custom-errors';
+import './config';
 config();
 
 const app = express();
@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/", mainRouter);
+app.use('/', mainRouter);
 
 app.use((err: Error, _req, res, _next) => {
   if (err instanceof CustomError) {
@@ -19,7 +19,7 @@ app.use((err: Error, _req, res, _next) => {
       .json({ message: err.message, data: err.payload });
   }
 
-  res.status(500).json({ message: "Server internal error" });
+  res.status(500).json({ message: 'Server internal error' });
 });
 
 app.listen(PORT, () => {

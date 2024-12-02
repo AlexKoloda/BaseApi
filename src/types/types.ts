@@ -1,4 +1,3 @@
-
 export interface UserInterface {
   id: number;
   firstName: string;
@@ -8,7 +7,7 @@ export interface UserInterface {
   dateBirth: string;
 }
 
-export type CreateUserType = Omit<UserInterface, "id">;
+export type CreateUserType = Omit<UserInterface, 'id'>;
 
 export interface UserSchema {
   validate(body: UserInterface, arg1: { abortEarly: boolean }): unknown;

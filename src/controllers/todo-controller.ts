@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
-import todoService from "../services/todo-service";
-import { NotFound } from "../util/custom-errors";
+import { NextFunction, Request, Response } from 'express';
+import todoService from '../services/todo-service';
+import { NotFound } from '../util/custom-errors';
 
 class TodoController {
   async createTodo(req: Request, res: Response, next: NextFunction) {
@@ -41,10 +41,10 @@ class TodoController {
       const { id } = req.params;
       const deletedTodos = await todoService.getCurrentTodo(Number(id));
       if (!deletedTodos) {
-        throw new NotFound("Todo not found");
+        throw new NotFound('Todo not found');
       }
       todoService.deleteTodo(Number(id));
-      res.status(200).json("Todo delete");
+      res.status(200).json('Todo delete');
     } catch (err) {
       next(err);
     }

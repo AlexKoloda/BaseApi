@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
-import userService from "../services/user-service";
-import {NotFound } from "../util/custom-errors";
+import { NextFunction, Request, Response } from 'express';
+import userService from '../services/user-service';
+import { NotFound } from '../util/custom-errors';
 
 class UserController {
   async getUsers(req: Request, res: Response, next: NextFunction) {
@@ -17,23 +17,23 @@ class UserController {
       const { id } = req.params;
       const user = await userService.getUser(Number(id));
       if (!user) {
-        throw new NotFound("User not found");
+        throw new NotFound('User not found');
       }
       res.status(200).json(user);
     } catch (err) {
       next(err);
     }
   }
-  
+
   async deleteUser(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     try {
       const deletedUser = await userService.getUser(Number(id));
-    if (!deletedUser) {
-      throw new NotFound("User not found");
-    }
+      if (!deletedUser) {
+        throw new NotFound('User not found');
+      }
       userService.deleteUser(Number(id));
-      res.status(200).json("User delete");
+      res.status(200).json('User delete');
     } catch (err) {
       next(err);
     }

@@ -1,5 +1,5 @@
-import { todoRepository } from "../repository/todo-repository";
-import { TodoType, UserInterface } from "../types/types";
+import { todoRepository } from '../repository/todo-repository';
+import { TodoType, UserInterface } from '../types/types';
 
 class TodoService {
   async createTodo(todo: TodoType) {
@@ -7,12 +7,16 @@ class TodoService {
   }
   // TODO Сделать фильтрацию
   getFilteredTodo(filter: string, userId: number): Promise<TodoType[]> {
-    if (filter === "all") {
+    if (filter === 'all') {
       return this.getUserTodo(userId);
+    }
+
+    if (filter === 'active') {
+      return this.getUserTodo(userId, false);
     }
   }
 
-  async getUserTodo(userId: number) {
+  async getUserTodo(userId: number, filter?: boolean) {
     return await todoRepository.find({
       where: {
         user: {
