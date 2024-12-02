@@ -1,12 +1,12 @@
 import * as express from 'express';
 import mainRouter from './routes';
-import { config } from 'dotenv';
 import { CustomError } from './util/custom-errors';
 import './config';
-config();
+import conf from './config';
+
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = conf.server.port || 4000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
