@@ -22,10 +22,6 @@ class authService {
       },
     });
   }
-
-  excludePassword = (user: CreateUserType) => {
-    return delete user.password;
-  };
 }
 
 export default new authService();
