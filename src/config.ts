@@ -31,6 +31,4 @@ const conf = {
   salt: process.env.SALT,
 };
 
-console.log(conf.database.userName);
-
 export default conf;

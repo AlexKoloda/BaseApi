@@ -30,17 +30,16 @@ class TodoController {
   }
 
   async getCurrentTodo(req: Request, res: Response, next: NextFunction) {
+
     try {
       const currentTodo = await todoService.getCurrentTodo(
-        Number(req.params.id)
+        Number(req.params.id),
+        Number(req.user.id)
       );
       if (!currentTodo) {
         throw new NotFound('Todo not found');
       }
-      if (!checkValidateUser(req.user.id, currentTodo.user.id)) {
-        throw new UnAuthorized('Access error');
-      }
-      excludeUser(currentTodo);
+
       res.status(200).json(currentTodo);
     } catch (err) {
       next(err);
@@ -50,14 +49,13 @@ class TodoController {
   async deleteTodo(req: Request, res: Response, next: NextFunction) {
     try {
       const deletedTodos = await todoService.getCurrentTodo(
-        Number(req.params.id)
+        Number(req.params.id),
+        Number(req.user.id)
       );
       if (!deletedTodos) {
         throw new NotFound('Todo not found');
       }
-      if (!checkValidateUser(req.user.id, deletedTodos.user.id)) {
-        throw new UnAuthorized('Access error');
-      }
+
       todoService.deleteTodo(Number(req.params.id));
       res.status(200).json('Todo delete');
     } catch (err) {
@@ -67,16 +65,20 @@ class TodoController {
 
   async updateTodo(req: Request, res: Response, next: NextFunction) {
     try {
-      const currentTodo = await todoService.getCurrentTodo(Number(req.body.id));
+      const currentTodo = await todoService.getCurrentTodo(
+        Number(req.body.id),
+        Number(req.user.id)
+      );
       if (!currentTodo) {
         throw new NotFound('Todo not found');
       }
-      if (!checkValidateUser(req.user.id, currentTodo.user.id)) {
-        throw new UnAuthorized('Access error');
-      }
+
       await todoService.updateTodo(req.body);
-      const updatedTodo = await todoService.getCurrentTodo(req.body.id);
-      excludeUser(updatedTodo);
+      const updatedTodo = await todoService.getCurrentTodo(
+        Number(req.body.id),
+        Number(req.user.id)
+      );
+
       res.status(200).json(updatedTodo);
     } catch (err) {
       next(err);

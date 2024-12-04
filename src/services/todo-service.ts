@@ -18,18 +18,26 @@ class TodoService {
     return this.getFilteredTodos(todos, filter);
   }
 
-  getFilteredTodos(todos: TodoType[], filter: string) {
-    return todos.filter((todo) => {
-      return todo.isCompleted ? todo.isCompleted : todo.isCompleted;
-    });
+  getFilteredTodos(todos: TodoType[], filter: string): TodoType[] {
+    switch (filter) {
+      case 'all':
+        return todos;
+      case 'active':
+        return todos.filter((todo) => !todo.isCompleted);
+      case 'completed':
+        return todos.filter((todo) => todo.isCompleted);
+    }
   }
 
-  async getCurrentTodo(todoId: number) {
+
+  async getCurrentTodo(todoId: number, userId: number) {
     return await todoRepository.findOne({
       where: {
         id: todoId,
+        user: {
+          id: userId,
+        }
       },
-      relations: ['user'],
     });
   }
 
