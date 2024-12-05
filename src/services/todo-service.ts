@@ -2,8 +2,8 @@ import { todoRepository } from '../repository/todo-repository';
 import { TodoType } from '../types/types';
 
 class TodoService {
-  async createTodo(todo: TodoType) {
-    return await todoRepository.save(todo);
+  createTodo(todo: TodoType) {
+    return todoRepository.save(todo);
   }
 
   async getAllTodo(filter: string, userId: number): Promise<TodoType[]> {
@@ -29,24 +29,23 @@ class TodoService {
     }
   }
 
-
-  async getCurrentTodo(todoId: number, userId: number) {
-    return await todoRepository.findOne({
+  getCurrentTodo(todoId: number, userId: number) {
+    return todoRepository.findOne({
       where: {
         id: todoId,
         user: {
           id: userId,
-        }
+        },
       },
     });
   }
 
-  async deleteTodo(todoId: number) {
-    await todoRepository.delete(todoId);
+  deleteTodo(todoId: number) {
+    todoRepository.delete(todoId);
   }
 
-  async updateTodo(todo: TodoType) {
-    return await todoRepository.update(todo.id, todo);
+  updateTodo(todo: TodoType) {
+    return todoRepository.update(todo.id, todo);
   }
 }
 
