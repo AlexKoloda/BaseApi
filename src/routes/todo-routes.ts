@@ -10,8 +10,8 @@ todoRouter.post(
   validate(createTodoSchema),
   todoController.createTodo
 );
+todoRouter.get('/', todoController.getFilteredTodos);
 todoRouter.get('/:id', todoController.getCurrentTodo);
-todoRouter.get('/filter/:filter', todoController.getFilteredTodos);
 todoRouter.patch('/', validate(updateTodoSchema), todoController.updateTodo);
 todoRouter.delete('/:id', todoController.deleteTodo);
 

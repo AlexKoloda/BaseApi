@@ -6,7 +6,7 @@ class TodoService {
     return todoRepository.save(todo);
   }
 
-  async getAllTodo(filter: string, userId: number): Promise<TodoType[]> {
+  async getAllTodo(userId: number, filter?: any): Promise<TodoType[]> {
     const todos = await todoRepository.find({
       where: {
         user: {
@@ -15,18 +15,19 @@ class TodoService {
       },
     });
 
-    return this.getFilteredTodos(todos, filter);
+    return this.getFilteredTodos(todos, filter, userId);
   }
 
-  getFilteredTodos(todos: TodoType[], filter: string): TodoType[] {
-    switch (filter) {
-      case 'all':
-        return todos;
-      case 'active':
-        return todos.filter((todo) => !todo.isCompleted);
-      case 'completed':
-        return todos.filter((todo) => todo.isCompleted);
+  async getFilteredTodos(todos: TodoType[],filter: string,userId: number): Promise<TodoType[]> {
+    if (filter === 'all') {
+      return todos;
     }
+    return await todoRepository.find({
+      where: {
+        user: { id: userId },
+        isCompleted: filter === 'active' ? false : true,
+      },
+    });
   }
 
   getCurrentTodo(todoId: number, userId: number) {
