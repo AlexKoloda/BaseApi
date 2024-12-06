@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import todoService from '../services/todo-service';
-import { CustomError, NotFound, UnAuthorized } from '../util/custom-errors';
-import { checkValidateUser } from '../util/checkUser';
+import { NotFound } from '../util/custom-errors';
 import { excludeUser } from '../util/excludeFunc';
 
 class TodoController {
@@ -11,7 +10,7 @@ class TodoController {
       const currentUser = req.user;
       todo.user = currentUser;
       await todoService.createTodo(todo);
-      delete todo.user;
+      excludeUser(todo);
       res.status(200).json(todo);
     } catch (err) {
       next(err);
@@ -20,9 +19,9 @@ class TodoController {
 
   async getFilteredTodos(req: Request, res: Response, next: NextFunction) {
     try {
-      const { filter } = req.params;
+      const { filter } = req.query;
       const userId = req.user.id;
-      const todos = await todoService.getAllTodo(filter, userId);
+      const todos = await todoService.getAllTodo(userId, filter);
       res.status(200).json(todos);
     } catch (err) {
       next(err);
