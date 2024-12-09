@@ -20,7 +20,8 @@ export interface UserSchema {
 }
 
 export interface TodoType {
-  id?: number;
+  id: number;
   text: string;
   isCompleted: boolean;
 }
+
