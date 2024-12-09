@@ -62,6 +62,15 @@ class TodoController {
     }
   }
 
+  async deleteAllTodo(req: Request, res: Response, next: NextFunction) {
+    try {
+      todoService.deleteAllTodo(Number(req.user.id));
+      res.status(200).json('Todo delete');
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async updateTodo(req: Request, res: Response, next: NextFunction) {
     try {
       const currentTodo = await todoService.getCurrentTodo(

@@ -1,5 +1,5 @@
 import { todoRepository } from '../repository/todo-repository';
-import { TodoType } from '../types/types';
+import { TodoType} from '../types/types';
 
 class TodoService {
   createTodo(todo: TodoType) {
@@ -45,6 +45,12 @@ class TodoService {
     todoRepository.delete(todoId);
   }
 
+ async deleteAllTodo(userId: number) {
+    todoRepository.delete({user: {
+      id: userId
+    }})
+  } 
+  
   updateTodo(todo: TodoType) {
     return todoRepository.update(todo.id, todo);
   }
