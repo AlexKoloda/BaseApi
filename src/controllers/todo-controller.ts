@@ -28,6 +28,16 @@ class TodoController {
     }
   }
 
+  async toggleComplete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user.id;
+      const todos = await todoService.toggleStatus(userId);
+      res.status(200).json(todos);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async getCurrentTodo(req: Request, res: Response, next: NextFunction) {
 
     try {

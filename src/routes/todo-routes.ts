@@ -6,6 +6,7 @@ import { createTodoSchema, updateTodoSchema } from '../validation/todo-schemas';
 const todoRouter = Router();
 
 todoRouter.post('/create', validate(createTodoSchema), todoController.createTodo);
+todoRouter.get('/toggle', todoController.toggleComplete);
 todoRouter.get('/', todoController.getFilteredTodos);
 todoRouter.get('/:id', todoController.getCurrentTodo);
 todoRouter.patch('/', validate(updateTodoSchema), todoController.updateTodo);
