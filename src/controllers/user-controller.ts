@@ -14,12 +14,10 @@ class UserController {
 
   async getUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const user = await userService.getUser(Number(id));
-      if (!user) {
+      if (!req.user) {
         throw new NotFound('User not found');
       }
-      res.status(200).json(user);
+      res.status(200).json(req.user);
     } catch (err) {
       next(err);
     }
