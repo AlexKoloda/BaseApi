@@ -6,7 +6,7 @@ import { updateUserSchema } from '../validation/user-schemas';
 const userRouter = Router();
 
 userRouter.get('/all', userController.getUsers);
-userRouter.get('/:id', userController.getUser);
+userRouter.get('/', userController.getUser);
 userRouter.patch('/', validate(updateUserSchema), userController.updateUser);
 userRouter.delete('/:id', userController.deleteUser);
 
