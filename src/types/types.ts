@@ -4,7 +4,6 @@ export interface UserInterface {
   lastName: string;
   email: string;
   password: string;
-  dateBirth: string;
 }
 
 export type CreateUserType = Omit<UserInterface, 'id'>;
@@ -16,7 +15,6 @@ export interface UserSchema {
   lastName?: string;
   email?: string;
   password?: string;
-  dateBirth?: string;
 }
 
 export interface TodoType {

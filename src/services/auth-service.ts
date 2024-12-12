@@ -18,7 +18,6 @@ class authService {
         lastName: true,
         password: true,
         email: true,
-        dateBirth: true,
       },
     });
   }

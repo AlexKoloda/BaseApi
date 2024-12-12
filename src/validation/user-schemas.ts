@@ -13,7 +13,6 @@ export const createUserSchema = object({
   password: string()
     .min(6, 'Password must be more than 6 characters')
     .required('Password must be require'),
-  dateBirth: string().min(1).required('Field must be require'),
 });
 
 export const signInSchema = object({
@@ -44,5 +43,4 @@ export const updateUserSchema = object({
   email: string()
     .email('Email must be with ex@ex.com')
     .required('Email must be require'),
-  dateBirth: string().min(1).required('Field must be require'),
 });

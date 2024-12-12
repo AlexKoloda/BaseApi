@@ -21,9 +21,6 @@ export default class User {
   @Column({ select: false })
   password: string;
 
-  @Column()
-  dateBirth: string;
-
   @OneToMany(()=> Todo , (todo) => todo.user)
   todos: Todo[];
 }
