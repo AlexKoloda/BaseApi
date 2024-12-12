@@ -19,11 +19,7 @@ class TodoService {
     return this.getFilteredTodos(todos, filter, userId);
   }
 
-  async getFilteredTodos(
-    todos: TodoType[],
-    filter: string,
-    userId: number
-  ): Promise<TodoType[]> {
+  async getFilteredTodos(todos: TodoType[],filter: string,userId: number): Promise<TodoType[]> {
     if (filter === 'all') {
       return todos;
     }
