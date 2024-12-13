@@ -7,7 +7,7 @@ class TodoService {
     return todoRepository.save(todo);
   }
 
-  async getAllTodo(userId: number, filter?: any): Promise<TodoType[]> {
+  async getAllTodo(userId: number, filter?: string): Promise<TodoType[]> {
     const todos = await todoRepository.find({
       where: {
         user: {
