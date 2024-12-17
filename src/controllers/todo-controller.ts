@@ -18,10 +18,11 @@ class TodoController {
   }
 
   async getFilteredTodos(req: Request, res: Response, next: NextFunction) {
-    try {
+    try { 
       const { filter } = req.query;
+      const stringFilter = filter as string;
       const userId = req.user.id;
-      const todos = await todoService.getAllTodo(userId, filter);
+      const todos = await todoService.getAllTodo(userId, stringFilter);
       res.status(200).json(todos);
     } catch (err) {
       next(err);
