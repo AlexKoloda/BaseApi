@@ -9,13 +9,14 @@ export default class User {
   name: string;
 
   @Column({
-    name: "email",
     unique: true,
   })
   email: string;
 
-  @Column()
-  avatar: string;
+  @Column({
+    default: '',
+  })
+  avatar?: string;
 
   @Column({ select: false })
   password: string;
