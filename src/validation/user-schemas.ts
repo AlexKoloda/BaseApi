@@ -1,10 +1,7 @@
 import { string, object } from 'yup';
 
 export const createUserSchema = object({
-  firstName: string()
-    .min(1, 'Name must be more than 1 characters')
-    .required('Name must be require'),
-  lastName: string()
+  name: string()
     .min(1, 'Surname must be more than 1 characters')
     .required('Surname must be require'),
   email: string()
@@ -34,12 +31,9 @@ export const updateUserSchema = object({
   id: string()
     .min(1, 'Id must be more than 1 characters')
     .required('Id must be require'),
-  firstName: string()
+  name: string()
     .min(1, 'Name must be more than 1 characters')
     .required('Name must be require'),
-  lastName: string()
-    .min(1, 'Surname must be more than 1 characters')
-    .required('Surname must be require'),
   email: string()
     .email('Email must be with ex@ex.com')
     .required('Email must be require'),

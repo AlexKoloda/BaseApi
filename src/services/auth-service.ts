@@ -14,8 +14,7 @@ class authService {
       },
       select: {
         id: true,
-        firstName: true,
-        lastName: true,
+        name: true,
         password: true,
         email: true,
       },
