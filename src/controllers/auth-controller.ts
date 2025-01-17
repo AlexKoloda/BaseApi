@@ -22,7 +22,6 @@ class AuthController {
     try {
       const { email } = req.body;
       const user = await authService.login(email);
-
       if (!user) {
         throw new NotFound('Not found user');
       }

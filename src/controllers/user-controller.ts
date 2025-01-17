@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import userService from '../services/user-service';
 import { NotFound } from '../util/custom-errors';
+import { generateHashPassword } from '../util/hash-password';
+import base64Decode from '../util/convert64Base';
 
 class UserController {
   async getUsers(req: Request, res: Response, next: NextFunction) {
@@ -24,8 +26,8 @@ class UserController {
   }
 
   async deleteUser(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
     try {
+      const { id } = req.params;
       const deletedUser = await userService.getUser(Number(id));
       if (!deletedUser) {
         throw new NotFound('User not found');
@@ -38,11 +40,42 @@ class UserController {
   }
 
   async updateUser(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.body;
     try {
+      const { id } = req.body;
       userService.updateUser(req.body);
       const updatedUser = await userService.getUser(Number(id));
       res.status(200).json(updatedUser);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async updateUserPhoto(req: Request, res: Response, next: NextFunction) {
+    try {
+      const file = `${req.user.name}${Date.now()}.png`
+      const path = `src/public/${file}`
+      req.user.avatar = file;
+      userService.updateUser(req.user);
+      base64Decode(req.body.avatar, path);
+      res.status(200).json(file);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async updateUserPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.user;
+      const user = await userService.getUser(id);
+      const oldPassword = (await userService.getUserPassword(id)).password;
+      const newHashPassword = generateHashPassword(req.body.newPassword);
+      const oldHashPassword = generateHashPassword(req.body.oldPassword);
+
+      if (oldHashPassword === oldPassword) {
+        user.password = newHashPassword;
+        userService.updateUserPassword(user);
+      }
+      res.status(200).json('Update successful');
     } catch (err) {
       next(err);
     }

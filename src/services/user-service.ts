@@ -14,13 +14,29 @@ class UserService {
     return userRepository.findOneBy({ id: userId });
   }
 
+  getUserPassword(userId: number) { 
+    return userRepository.findOne({
+      where: {
+        id: userId,
+      },
+      select: {
+        password: true,
+      },
+    });
+  }
+
   updateUser(user: UserInterface) {
     userRepository.update(user.id, user);
+  }
+
+  updateUserPassword(user: UserInterface) {
+   userRepository.update(user.id, user);
   }
 
   deleteUser(userId: number) {
     userRepository.delete(userId);
   }
+
 }
 
 export default new UserService();

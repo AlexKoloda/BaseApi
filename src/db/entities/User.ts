@@ -5,7 +5,9 @@ export default class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    default: 'User' + Date.now()
+  })
   name: string;
 
   @Column({
