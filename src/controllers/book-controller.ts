@@ -1,23 +1,28 @@
 // TODO Переписать на логику книг
 
-// import { NextFunction, Request, Response } from 'express';
-// import todoService from '../services/todo-service';
+import { NextFunction, Request, Response } from 'express';
+import bookService from '../services/book-service';
 // import { NotFound } from '../util/custom-errors';
 // import { excludeUser } from '../util/excludeFunc';
 
-// class TodoController {
-//   async createTodo(req: Request, res: Response, next: NextFunction) {
-//     try {
-//       const todo = req.body;
-//       const currentUser = req.user;
-//       todo.user = currentUser;
-//       await todoService.createTodo(todo);
-//       excludeUser(todo);
-//       res.status(200).json(todo);
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
+class BookController {
+   async createBook(req: Request, res: Response, next: NextFunction) {
+     try {
+      const newBook = await bookService.createBook(req.body);
+      res.status(200).json(newBook);
+    } catch (err) {
+       next(err);
+    }
+   }
+
+   async getAllBook(req: Request, res: Response, next: NextFunction) {
+      try {
+         const allBook = await bookService.getAllBook();
+         res.status(200).json(allBook)
+      } catch (err) {
+         next(err)
+      }
+   }
 
 //   async getFilteredTodos(req: Request, res: Response, next: NextFunction) {
 //     try { 
@@ -105,6 +110,6 @@
 //       next(err);
 //     }
 //   }
-// }
+}
 
-// export default new TodoController();
+export default new BookController();

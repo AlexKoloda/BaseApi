@@ -1,5 +1,5 @@
 import { Book} from '../db/entities/Book';
-import { CreateUserType, TodoType } from '../types/types';
+import { CreateUserType } from '../types/types';
 
 export const excludePassword = (user: CreateUserType) => {
   return delete user.password;

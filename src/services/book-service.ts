@@ -1,25 +1,17 @@
 // TODO Изменить на логику книг 
 
 // import User from '../db/entities/User';
-// import { todoRepository } from '../repository/todo-repository';
-// import { TodoType } from '../types/types';
+ import { bookRepository } from '../repository/book-repository';
+ import { BookType } from '../types/types';
 
-// class TodoService {
-//   createTodo(todo: TodoType) {
-//     return todoRepository.save(todo);
-//   }
+ class TodoService {
+   createBook(book: BookType) {
+    return bookRepository.save(book);
+  }
 
-//   async getAllTodo(userId: number, filter?: string): Promise<TodoType[]> {
-//     const todos = await todoRepository.find({
-//       where: {
-//         user: {
-//           id: userId,
-//         },
-//       },
-//     });
-
-//     return this.getFilteredTodos(todos, filter, userId);
-//   }
+  async getAllBook(): Promise <BookType[]> {
+     return bookRepository.find();
+  }
 
 //   async getFilteredTodos(todos: TodoType[],filter: string,userId: number): Promise<TodoType[]> {
 //     if (filter === 'all') {
@@ -74,6 +66,6 @@
 //   updateTodo(todo: TodoType) {
 //     return todoRepository.update(todo.id, todo);
 //   }
-// }
+}
 
-// export default new TodoService();
+ export default new TodoService();

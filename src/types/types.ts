@@ -16,9 +16,14 @@ export interface UserSchema {
   password?: string;
 }
 
-export interface TodoType {
+export interface BookType {
   id: number;
-  text: string;
-  isCompleted: boolean;
+  photo: string;
+  title: string,
+  author: string,
+  description: string,
+  price: string,
+  isNew: boolean,
+  isBestseller: boolean,
 }
 
