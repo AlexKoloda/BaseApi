@@ -17,6 +17,7 @@ class authService {
         name: true,
         password: true,
         email: true,
+        avatar: true,
       },
     });
   }
