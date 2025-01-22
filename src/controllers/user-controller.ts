@@ -49,15 +49,16 @@ class UserController {
       next(err);
     }
   }
-
+  // TODO переделать на асинхронную функцию, константу юзера
   async updateUserPhoto(req: Request, res: Response, next: NextFunction) {
     try {
-      const file = `${req.user.name}${Date.now()}.png`
-      const path = `src/public/${file}`
-      req.user.avatar = file;
-      userService.updateUser(req.user);
-      base64Decode(req.body.avatar, path);
-      res.status(200).json(file);
+      const { user } = req;
+      const file = `${user.name}${Date.now()}.png`;
+      const path = `src/public/${file}`;
+      user.avatar = file;
+      const updateUser = userService.updateUser(user);
+      await base64Decode(req.body.avatar, path);
+      res.status(200).json(updateUser);
     } catch (err) {
       next(err);
     }
