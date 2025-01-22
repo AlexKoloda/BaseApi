@@ -34,6 +34,7 @@ class AuthController {
 
       const currentToken = createJwt(user.id);
       excludePassword(user);
+
       res.status(200).json({ user: user, token: currentToken });
     } catch (err) {
       next(err);
