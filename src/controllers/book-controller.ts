@@ -17,7 +17,8 @@ class BookController {
 
    async getAllBook(req: Request, res: Response, next: NextFunction) {
       try {
-         const allBook = await bookService.getAllBook();
+         const { page } = req.query;
+         const allBook = await bookService.getAllBook(Number(page));
          res.status(200).json(allBook)
       } catch (err) {
          next(err)
