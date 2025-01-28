@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import User from "./User";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {Author} from "./Author";
+import { BookGenre } from './BookGenre';
 
 @Entity()
 export class Book {
@@ -13,9 +14,6 @@ export class Book {
   title: string;
 
   @Column()
-  author: string;
-
-  @Column()
   description: string;
 
   @Column()
@@ -26,5 +24,11 @@ export class Book {
 
   @Column()
   isBestseller: boolean;
+
+  @ManyToOne(() => Author, (author) => author.books)
+  author: Author;
+
+  @OneToMany(() => BookGenre, (bookGenre) => bookGenre.genre)
+  bookGenres: BookGenre[];
 
 }
