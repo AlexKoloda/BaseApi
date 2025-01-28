@@ -9,12 +9,12 @@ class TodoService {
     return bookRepository.save(book);
   }
 
-  async getAllBook(page: number): Promise<BookType[]> {
+  async getAllBook(page: number): Promise<[BookType[], number]> {
     const limit = 12;
     const from = (page - 1) * limit;
     const to = limit + from;
 
-    return bookRepository.find({
+    return bookRepository.findAndCount({
       skip: from,
       take: to,
     });
