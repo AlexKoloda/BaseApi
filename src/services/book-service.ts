@@ -12,11 +12,14 @@ class TodoService {
   async getAllBook(page: number): Promise<[BookType[], number]> {
     const limit = 12;
     const from = (page - 1) * limit;
-    const to = limit + from;
-
+    
     return bookRepository.findAndCount({
+      
+      relations: {
+        author: true,
+      },       
       skip: from,
-      take: to,
+      take: limit,
     });
   }
 
