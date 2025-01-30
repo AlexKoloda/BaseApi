@@ -1,5 +1,5 @@
 export interface UserInterface {
-  id: number;
+  id: string;
   name?: string;
   email: string;
   avatar?: string;
@@ -10,18 +10,18 @@ export type CreateUserType = Omit<UserInterface, 'id'>;
 
 export interface UserSchema {
   validate(body: UserInterface, arg1: { abortEarly: boolean }): unknown;
-  id?: number;
+  id?: string;
   name?: string;
   email?: string;
   password?: string;
 }
 
 export interface BookType {
-  id: number;
+  id: string;
   photo: string;
   title: string,
   description: string,
-  price: string,
+  price: number,
   isNew: boolean,
   isBestseller: boolean,
 }

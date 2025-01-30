@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
 @Entity()
 export default class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column({
     default: 'User' + Date.now()

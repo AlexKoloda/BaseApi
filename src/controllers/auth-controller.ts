@@ -10,7 +10,7 @@ class AuthController {
     try {
       req.body.password = generateHashPassword(req.body.password);
       const newUser = await authService.registration(req.body);
-      const currentToken = createJwt(newUser.id);
+      const currentToken = createJwt(Number(newUser.id));
       excludePassword(newUser);
       res.status(201).json({ user: newUser, token: currentToken });
     } catch (err) {
@@ -32,7 +32,7 @@ class AuthController {
         throw new BadParams('Wrong password');
       }
 
-      const currentToken = createJwt(user.id);
+      const currentToken = createJwt(Number(user.id));
       excludePassword(user);
 
       res.status(200).json({ user: user, token: currentToken });

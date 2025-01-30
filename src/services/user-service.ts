@@ -10,11 +10,11 @@ class UserService {
     return userRepository.find();
   }
 
-  getUser(userId: number) {
+  getUser(userId: string) {
     return userRepository.findOneBy({ id: userId });
   }
 
-  getUserPassword(userId: number) { 
+  getUserPassword(userId: string) { 
     return userRepository.findOne({
       where: {
         id: userId,
@@ -33,7 +33,7 @@ class UserService {
    userRepository.update(user.id, user);
   }
 
-  deleteUser(userId: number) {
+  deleteUser(userId: string) {
     userRepository.delete(userId);
   }
 

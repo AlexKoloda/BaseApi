@@ -28,11 +28,11 @@ class UserController {
   async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const deletedUser = await userService.getUser(Number(id));
+      const deletedUser = await userService.getUser(id);
       if (!deletedUser) {
         throw new NotFound('User not found');
       }
-      userService.deleteUser(Number(id));
+      userService.deleteUser(id);
       res.status(200).json('User delete');
     } catch (err) {
       next(err);
@@ -43,7 +43,7 @@ class UserController {
     try {
       const { id } = req.body;
       userService.updateUser(req.body);
-      const updatedUser = await userService.getUser(Number(id));
+      const updatedUser = await userService.getUser(id);
       res.status(200).json(updatedUser);
     } catch (err) {
       next(err);

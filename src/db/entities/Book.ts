@@ -5,7 +5,7 @@ import { BookGenre } from './BookGenre';
 @Entity()
 export class Book {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
   photo: string;
@@ -16,8 +16,8 @@ export class Book {
   @Column()
   description: string;
 
-  @Column()
-  price: string;
+  @Column({ type: 'float', default: 14.99 })
+  price: number;
 
   @Column()
   isNew: boolean;
@@ -28,7 +28,7 @@ export class Book {
   @ManyToOne(() => Author, (author) => author.books)
   author: Author;
 
-  @OneToMany(() => BookGenre, (bookGenre) => bookGenre.genre)
+  @OneToMany(() => BookGenre, (bookGenre) => bookGenre.book)
   bookGenres: BookGenre[];
 
 }

@@ -5,7 +5,7 @@ import { Book } from './Book';
 @Entity()
 export class Author {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column({ unique: true })
   name: string;

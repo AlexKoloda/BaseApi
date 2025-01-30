@@ -7,7 +7,7 @@ import { Genre } from './Genre';
 export class BookGenre {
 
  @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @ManyToOne(() => Book, (book) => book.bookGenres)
   book: Book;

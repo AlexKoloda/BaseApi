@@ -1,26 +1,42 @@
 // TODO Изменить на логику книг
 
 // import User from '../db/entities/User';
-import { bookRepository } from '../repository/book-repository';
+import { Genre } from '../db/entities/Genre';
+import { bookRepository} from '../repository/book-repository';
+import { genreRepository } from '../repository/genre-repository';
 import { BookType } from '../types/types';
 
-class TodoService {
+class BookService {
   createBook(book: BookType) {
     return bookRepository.save(book);
   }
 
-  async getAllBook(page: number): Promise<[BookType[], number]> {
+  async getBooks(page, genre) {
+    console.log(genre)
     const limit = 12;
-    const from = (page - 1) * limit;
+    const from = (Number(page) - 1) * limit;
     
-    return bookRepository.findAndCount({
-      
+    const genres = await genreRepository.find();
+    const books = await bookRepository.findAndCount({   
+  
       relations: {
         author: true,
+
       },       
+
+      where: {
+        bookGenres: {
+          genre: { id: genre}
+        }
+      },
       skip: from,
-      take: limit,
+      take: limit,      
     });
+   
+    return {
+      books: books,
+      genres: genres,
+    }
   }
 
   //   async getFilteredTodos(todos: TodoType[],filter: string,userId: number): Promise<TodoType[]> {
@@ -78,4 +94,4 @@ class TodoService {
   //   }
 }
 
-export default new TodoService();
+export default new BookService();

@@ -6,111 +6,112 @@ import bookService from '../services/book-service';
 // import { excludeUser } from '../util/excludeFunc';
 
 class BookController {
-   async createBook(req: Request, res: Response, next: NextFunction) {
-     try {
+  async createBook(req: Request, res: Response, next: NextFunction) {
+    try {
       const newBook = await bookService.createBook(req.body);
       res.status(200).json(newBook);
     } catch (err) {
-       next(err);
+      next(err);
     }
-   }
+  }
 
-   async getAllBook(req: Request, res: Response, next: NextFunction) {
-      try {
-         const { page } = req.query;
-         const allBook = await bookService.getAllBook(Number(page));
-         res.status(200).json(allBook)
-      } catch (err) {
-         next(err)
-      }
-   }
+  async getAllBook(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { page } = req.query;
+      const { genre } = req.query;
+      const allBook = await bookService.getBooks(page, genre);
+      res.status(200).json(allBook);
+    } catch (err) {
+      next(err);
+    }
+  }
 
-//   async getFilteredTodos(req: Request, res: Response, next: NextFunction) {
-//     try { 
-//       const { filter } = req.query;
-//       const stringFilter = filter as string;
-//       const userId = req.user.id;
-//       const todos = await todoService.getAllTodo(userId, stringFilter);
-//       res.status(200).json(todos);
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
+  //   async getFilteredTodos(req: Request, res: Response, next: NextFunction) {
+  //     try {
+  //       const { filter } = req.query;
+  //       const stringFilter = filter as string;
+  //       const userId = req.user.id;
+  //       const todos = await todoService.getAllTodo(userId, stringFilter);
+  //       res.status(200).json(todos);
+  //     } catch (err) {
+  //       next(err);
+  //     }
+  //   }
 
-//   async toggleComplete(req: Request, res: Response, next: NextFunction) {
-//     try {
-//       const userId = req.user.id;
-//       const todos = await todoService.toggleStatus(userId);
-//       res.status(200).json(todos);
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
+  //   async toggleComplete(req: Request, res: Response, next: NextFunction) {
+  //     try {
+  //       const userId = req.user.id;
+  //       const todos = await todoService.toggleStatus(userId);
+  //       res.status(200).json(todos);
+  //     } catch (err) {
+  //       next(err);
+  //     }
+  //   }
 
-//   async getCurrentTodo(req: Request, res: Response, next: NextFunction) {
+  //   async getCurrentTodo(req: Request, res: Response, next: NextFunction) {
 
-//     try {
-//       const currentTodo = await todoService.getCurrentTodo(
-//         Number(req.params.id),
-//         Number(req.user.id)
-//       );
-//       if (!currentTodo) {
-//         throw new NotFound('Todo not found');
-//       }
+  //     try {
+  //       const currentTodo = await todoService.getCurrentTodo(
+  //         Number(req.params.id),
+  //         Number(req.user.id)
+  //       );
+  //       if (!currentTodo) {
+  //         throw new NotFound('Todo not found');
+  //       }
 
-//       res.status(200).json(currentTodo);
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
+  //       res.status(200).json(currentTodo);
+  //     } catch (err) {
+  //       next(err);
+  //     }
+  //   }
 
-//   async deleteTodo(req: Request, res: Response, next: NextFunction) {
-//     try {
-//       const deletedTodos = await todoService.getCurrentTodo(
-//         Number(req.params.id),
-//         Number(req.user.id)
-//       );
-//       if (!deletedTodos) {
-//         throw new NotFound('Todo not found');
-//       }
+  //   async deleteTodo(req: Request, res: Response, next: NextFunction) {
+  //     try {
+  //       const deletedTodos = await todoService.getCurrentTodo(
+  //         Number(req.params.id),
+  //         Number(req.user.id)
+  //       );
+  //       if (!deletedTodos) {
+  //         throw new NotFound('Todo not found');
+  //       }
 
-//       todoService.deleteTodo(Number(req.params.id));
-//       res.status(200).json('Todo delete');
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
+  //       todoService.deleteTodo(Number(req.params.id));
+  //       res.status(200).json('Todo delete');
+  //     } catch (err) {
+  //       next(err);
+  //     }
+  //   }
 
-//   async deleteAllTodo(req: Request, res: Response, next: NextFunction) {
-//     try {
-//       todoService.deleteAllTodo(Number(req.user.id));
-//       res.status(200).json('Todo delete');
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
+  //   async deleteAllTodo(req: Request, res: Response, next: NextFunction) {
+  //     try {
+  //       todoService.deleteAllTodo(Number(req.user.id));
+  //       res.status(200).json('Todo delete');
+  //     } catch (err) {
+  //       next(err);
+  //     }
+  //   }
 
-//   async updateTodo(req: Request, res: Response, next: NextFunction) {
-//     try {
-//       const currentTodo = await todoService.getCurrentTodo(
-//         Number(req.body.id),
-//         Number(req.user.id)
-//       );
-//       if (!currentTodo) {
-//         throw new NotFound('Todo not found');
-//       }
+  //   async updateTodo(req: Request, res: Response, next: NextFunction) {
+  //     try {
+  //       const currentTodo = await todoService.getCurrentTodo(
+  //         Number(req.body.id),
+  //         Number(req.user.id)
+  //       );
+  //       if (!currentTodo) {
+  //         throw new NotFound('Todo not found');
+  //       }
 
-//       await todoService.updateTodo(req.body);
-//       const updatedTodo = await todoService.getCurrentTodo(
-//         Number(req.body.id),
-//         Number(req.user.id)
-//       );
+  //       await todoService.updateTodo(req.body);
+  //       const updatedTodo = await todoService.getCurrentTodo(
+  //         Number(req.body.id),
+  //         Number(req.user.id)
+  //       );
 
-//       res.status(200).json(updatedTodo);
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
+  //       res.status(200).json(updatedTodo);
+  //     } catch (err) {
+  //       next(err);
+  //     }
+  //   }
 }
 
 export default new BookController();
