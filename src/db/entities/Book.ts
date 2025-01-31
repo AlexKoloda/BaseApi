@@ -16,8 +16,14 @@ export class Book {
   @Column()
   description: string;
 
+  @Column({ type: 'date', default: '01-12-2000' })
+  dataIssue: Date;
+
   @Column({ type: 'float', default: 14.99 })
   price: number;
+
+  @Column({ default: 2 })
+  numberBooksStock: number;
 
   @Column()
   isNew: boolean;

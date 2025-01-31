@@ -17,9 +17,11 @@ class BookController {
 
   async getAllBook(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log(req.query)
+      const { sort } = req.query;
       const { page } = req.query;
       const { genre } = req.query;
-      const allBook = await bookService.getBooks(page, genre);
+      const allBook = await bookService.getBooks(page, genre, sort);
       res.status(200).json(allBook);
     } catch (err) {
       next(err);

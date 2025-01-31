@@ -1,8 +1,9 @@
 // TODO Изменить на логику книг
 
 // import User from '../db/entities/User';
+import { In } from 'typeorm';
 import { Genre } from '../db/entities/Genre';
-import { bookRepository} from '../repository/book-repository';
+import { bookRepository } from '../repository/book-repository';
 import { genreRepository } from '../repository/genre-repository';
 import { BookType } from '../types/types';
 
@@ -11,32 +12,65 @@ class BookService {
     return bookRepository.save(book);
   }
 
-  async getBooks(page, genre) {
-    console.log(genre)
+  async getBooks(page, genre, sort) {
+
+    let sortingArg = '1';
+
+    const genreArray = genre ? genre.split(',') : [];
+
+    switch (sort) {
+      case '1':
+        sortingArg = 'price';
+        break;
+      case '2':
+        sortingArg = 'title';
+        break;
+      case '3':
+        sortingArg = 'author';
+        break;
+      case '4':
+        sortingArg = 'Rating';
+        break;
+      case '4':
+        sortingArg = 'dataIssue';
+        break;
+    }
+
+
     const limit = 12;
     const from = (Number(page) - 1) * limit;
-    
-    const genres = await genreRepository.find();
-    const books = await bookRepository.findAndCount({   
-  
+
+    const genres = await genreRepository.find({
+      order: {
+        id: 'ASC',
+      }
+    });
+    console.log(genres)
+    const books = await bookRepository.findAndCount({
       relations: {
         author: true,
-
-      },       
+      },
 
       where: {
         bookGenres: {
-          genre: { id: genre}
+          genre: genre? In(genreArray) : {id: genre},          
+        },
+      },
+      order: {
+       [sortingArg]: 'DESC',
+
+        author: {
+          name: "ASC"
         }
       },
       skip: from,
-      take: limit,      
+      take: limit,
     });
    
     return {
       books: books,
       genres: genres,
-    }
+    };
   }
 
   //   async getFilteredTodos(todos: TodoType[],filter: string,userId: number): Promise<TodoType[]> {

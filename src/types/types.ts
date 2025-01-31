@@ -26,3 +26,10 @@ export interface BookType {
   isBestseller: boolean,
 }
 
+export interface queryType {
+  page: string,
+  genre?: string,
+  sort: string,
+  price?: string,
+}
+
