@@ -18,7 +18,7 @@ class BookController {
   async getAllBook(req: Request, res: Response, next: NextFunction) {
     try {
       console.log(req.query)
-      const { sort } = req.query;
+      const  sort  = req.query.sort || '2';
       const { page } = req.query;
       const { genre } = req.query;
       const allBook = await bookService.getBooks(page, genre, sort);
