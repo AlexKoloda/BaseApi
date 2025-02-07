@@ -1,6 +1,6 @@
 // TODO Переписать на логику книг
 
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, query, Request, Response } from 'express';
 import bookService from '../services/book-service';
 // import { NotFound } from '../util/custom-errors';
 // import { excludeUser } from '../util/excludeFunc';
@@ -17,16 +17,40 @@ class BookController {
 
   async getAllBook(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log(req.query)
-      const  sort  = req.query.sort || '2';
+      const sort = req.query.sort || '1';
+      const { search } = req.query;
       const { page } = req.query;
       const { genre } = req.query;
-      const allBook = await bookService.getBooks(page, genre, sort);
+      const { price } = req.query;
+      const allBook = await bookService.getBooks(page, genre, sort, price, search);
       res.status(200).json(allBook);
     } catch (err) {
       next(err);
     }
   }
+
+  async getBook(req: Request, res: Response, next: NextFunction) {
+    try {    
+      const { id } = req.query;
+      const book = await bookService.getBook(String(id));  
+      res.status(200).json(book);    
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getRecommendationBooks(req: Request, res: Response, next: NextFunction) {
+    try {     
+      const { id } = req.query;
+      const books = await bookService.getRecBooks(id);  
+      res.status(200).json(books);   
+      console.log(books)
+    } catch (err) {
+      next(err);
+    }
+  }
+
+
 
   //   async getFilteredTodos(req: Request, res: Response, next: NextFunction) {
   //     try {

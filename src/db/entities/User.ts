@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne} from "typeorm";
+import Cart from './Cart';
 
 @Entity()
 export default class User {
@@ -6,7 +7,7 @@ export default class User {
   id: string;
 
   @Column({
-    default: 'User' + Date.now()
+    default: 'User' + Date.now(),
   })
   name: string;
 
@@ -23,4 +24,6 @@ export default class User {
   @Column({ select: false })
   password: string;
 
+  @OneToOne(() => Cart, (cart) => cart.user)
+  cart: Cart;
 }

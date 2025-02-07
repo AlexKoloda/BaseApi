@@ -2,11 +2,9 @@ import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Book } from './Book';
 import { Genre } from './Genre';
 
-
-@Entity() 
+@Entity()
 export class BookGenre {
-
- @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn()
   id: string;
 
   @ManyToOne(() => Book, (book) => book.bookGenres)
@@ -14,6 +12,4 @@ export class BookGenre {
 
   @ManyToOne(() => Genre, (genre) => genre.bookGenres)
   genre: Genre;
-
-
 }
