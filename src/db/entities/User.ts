@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne} from "typeorm";
 import Cart from './Cart';
+import { Rating } from './Rating';
 
 @Entity()
 export default class User {
@@ -24,6 +25,11 @@ export default class User {
   @Column({ select: false })
   password: string;
 
+  @OneToMany(() => Rating, (rating) => rating.user)
+  rating: Rating[];
+
   @OneToOne(() => Cart, (cart) => cart.user)
   cart: Cart;
+
+
 }

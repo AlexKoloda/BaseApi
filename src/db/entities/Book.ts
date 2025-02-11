@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "ty
 import {Author} from "./Author";
 import { BookGenre } from './BookGenre';
 import Cart from './Cart';
+import { Rating } from './Rating';
 
 @Entity()
 export class Book {
@@ -38,6 +39,9 @@ export class Book {
   @OneToMany(() => BookGenre, (bookGenre) => bookGenre.book)
   bookGenres: BookGenre[];
 
-   @OneToMany(() => Cart, (cart) => cart.user)
+  @OneToMany(() => Rating, (rating) => rating.book)
+  rating: Rating;
+
+  @OneToMany(() => Cart, (cart) => cart.user)
     cart: Cart;
 }
