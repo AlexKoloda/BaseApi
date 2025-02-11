@@ -41,10 +41,10 @@ class BookController {
 
   async getRecommendationBooks(req: Request, res: Response, next: NextFunction) {
     try {     
-      const { id } = req.query;
-      const books = await bookService.getRecBooks(id);  
+      const { genreId } = req.query;
+      const { bookId }= req.query;
+      const books = await bookService.getRecBooks(genreId, bookId);  
       res.status(200).json(books);   
-      console.log(books)
     } catch (err) {
       next(err);
     }

@@ -1,6 +1,6 @@
 // TODO Изменить на логику книг
 
-import { ArrayContains, Between, In, Like } from 'typeorm';
+import { ArrayContains, Between, In, Like, Not, Tree } from 'typeorm';
 import { bookRepository } from '../repository/book-repository';
 import { genreRepository } from '../repository/genre-repository';
 import { BookType } from '../types/types';
@@ -15,7 +15,9 @@ class BookService {
     return bookRepository.findOne({
       relations: {
         author: true,
-        bookGenres: true,
+        bookGenres: {
+          genre: true,
+        },
       },
       where: {
         id: id,
@@ -23,22 +25,24 @@ class BookService {
     });
   }
 
-  async getRecBooks(genreId) {
-    
-    const books = await bookRepository.find({
+  async getRecBooks(genreId, bookId) {
+    return bookRepository.find({
       relations: {
         author: true,
       },
-
       where: {
+        id: Not(bookId),
         bookGenres: {
-          genre : {
-            name: genreId
+          genre: {
+            id: genreId,
           },
         },
+        author: true,
       },
-    })
-     return books; // возвращает []
+
+      take: 4,
+      cache: true,
+    });
   }
 
   async getBooks(page, genre, sort, price, search) {
