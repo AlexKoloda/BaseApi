@@ -5,6 +5,8 @@ import { bookRepository } from '../repository/book-repository';
 import { genreRepository } from '../repository/genre-repository';
 import { BookType } from '../types/types';
 import { bookGenreRepository } from '../repository/book-genre-repository';
+import { ratingRepository } from '../repository/rating-repository';
+import userService from './user-service';
 
 class BookService {
   createBook(book: BookType) {
@@ -195,6 +197,57 @@ class BookService {
     //   updateTodo(todo: TodoType) {
     //     return todoRepository.update(todo.id, todo);
     //   }
+  }
+
+  async updateRating(userId: string, bookId: string, value: number) {
+    const user = await userService.getUser(userId);
+    const book = await this.getBook(bookId);
+    const rating = await ratingRepository.findOne({
+      where: {
+         user: {
+           id: userId,
+         },
+        book: {
+          id: bookId,
+        },
+      },
+    });
+     
+     if(!rating) {
+       return ratingRepository.save({ book, user, value });
+     }
+      rating.value = value;
+      const res =  await ratingRepository.update(rating.id, rating);
+      return res;
+  }
+
+  async getAverageRating(id) {
+    let averageRating = 0;
+    const rating = await ratingRepository.find({
+      where: { book: { id: id } },
+    });
+    rating.map((item) => {
+      averageRating += item.value;
+      return averageRating;
+    });
+    return Math.round(averageRating / rating.length);
+  }
+
+  async getCurrentBookRating(bookId, userId) {
+    const rating = await ratingRepository.findOne({
+      where: {
+         user: {
+           id: userId,
+         },
+        book: {
+          id: bookId,
+        },
+      },
+    });
+    if (!rating) {
+      return 0;
+    }
+    return rating.value;
   }
 }
 

@@ -2,6 +2,7 @@
 
 import { NextFunction, query, Request, Response } from 'express';
 import bookService from '../services/book-service';
+import { NotFound } from '../util/custom-errors';
 // import { NotFound } from '../util/custom-errors';
 // import { excludeUser } from '../util/excludeFunc';
 
@@ -22,7 +23,13 @@ class BookController {
       const { page } = req.query;
       const { genre } = req.query;
       const { price } = req.query;
-      const allBook = await bookService.getBooks(page, genre, sort, price, search);
+      const allBook = await bookService.getBooks(
+        page,
+        genre,
+        sort,
+        price,
+        search
+      );
       res.status(200).json(allBook);
     } catch (err) {
       next(err);
@@ -30,27 +37,68 @@ class BookController {
   }
 
   async getBook(req: Request, res: Response, next: NextFunction) {
-    try {    
+    try {
       const { id } = req.query;
-      const book = await bookService.getBook(String(id));  
-      res.status(200).json(book);    
+      const book = await bookService.getBook(String(id));
+      res.status(200).json(book);
     } catch (err) {
       next(err);
     }
   }
 
-  async getRecommendationBooks(req: Request, res: Response, next: NextFunction) {
-    try {     
+  async getRecommendationBooks(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
       const { genreId } = req.query;
-      const { bookId }= req.query;
-      const books = await bookService.getRecBooks(genreId, bookId);  
-      res.status(200).json(books);   
+      const { bookId } = req.query;
+      const books = await bookService.getRecBooks(genreId, bookId);
+      res.status(200).json(books);
     } catch (err) {
       next(err);
     }
   }
 
+  async updateBookRating(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user.id;
+      const bookId = req.body.id;
+      const { value } = req.body;
+      const currentBook = await bookService.getBook(String(bookId));
+      if (!currentBook) {
+        throw new NotFound('Book not found');
+      }
+      const rating = await bookService.updateRating(String(userId), String(bookId), Number(value));
+      res.status(200).json(rating);
+    } catch (err) {
+      next(err);
+    }
+  }
 
+  async getAverageRating(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {id} = req.query;
+      const rating = await bookService.getAverageRating(id);
+      res.status(200).json(rating);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getCurrentBookRating(req: Request, res: Response, next: NextFunction) {
+    try {
+     
+      const bookId = req.query.id;
+      const userId = req.user.id;
+      const rating = await bookService.getCurrentBookRating(Number(bookId), Number(userId));
+      console.log(rating)
+      res.status(200).json(rating);
+    } catch (err) {
+      next(err);
+    }
+  }
 
   //   async getFilteredTodos(req: Request, res: Response, next: NextFunction) {
   //     try {
