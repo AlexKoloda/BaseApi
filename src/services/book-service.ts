@@ -31,6 +31,7 @@ class BookService {
     return bookRepository.find({
       relations: {
         author: true,
+        rating: true,
       },
       where: {
         id: Not(bookId),
