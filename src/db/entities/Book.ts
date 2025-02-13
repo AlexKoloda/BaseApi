@@ -3,6 +3,7 @@ import {Author} from "./Author";
 import { BookGenre } from './BookGenre';
 import Cart from './Cart';
 import { Rating } from './Rating';
+import { Comment } from './Comment';
 
 @Entity()
 export class Book {
@@ -41,6 +42,9 @@ export class Book {
 
   @OneToMany(() => Rating, (rating) => rating.book)
   rating: Rating;
+
+  @OneToMany(() => Comment, (comment) => comment.book)
+  comments: Comment[];
 
   @OneToMany(() => Cart, (cart) => cart.user)
     cart: Cart;

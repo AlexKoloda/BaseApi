@@ -14,17 +14,26 @@ class BookService {
   }
 
   async getBook(id: string) {
-    return bookRepository.findOne({
+    const book = await bookRepository.findOne({
       relations: {
         author: true,
         bookGenres: {
           genre: true,
         },
+        comments: {
+          user: true,
+        },
       },
       where: {
         id: id,
-      },
+      },     
+      
     });
+    if ( book && book.comments) {
+
+      book.comments.sort((a, b) => new Date(b.dateOfCreate).getDate() - new Date(a.dateOfCreate).getDate());
+    }
+    return book;
   }
 
   async getRecBooks(genreId, bookId) {
@@ -66,7 +75,7 @@ class BookService {
         sortingArg = 'author';
         break;
       case '4':
-        sortingArg = 'Rating';
+        sortingArg = 'rating';
         break;
       case '5':
         sortingArg = 'dataIssue';
@@ -144,7 +153,6 @@ class BookService {
       books: books,
       genres: genres,
     };
-
   }
 
   async updateRating(userId: string, bookId: string, value: number) {
@@ -152,21 +160,21 @@ class BookService {
     const book = await this.getBook(bookId);
     const rating = await ratingRepository.findOne({
       where: {
-         user: {
-           id: userId,
-         },
+        user: {
+          id: userId,
+        },
         book: {
           id: bookId,
         },
       },
     });
-     
-     if(!rating) {
-       return ratingRepository.save({ book, user, value });
-     }
-      rating.value = value;
-      const res =  await ratingRepository.update(rating.id, rating);
-      return res;
+
+    if (!rating) {
+      return ratingRepository.save({ book, user, value });
+    }
+    rating.value = value;
+    const res = await ratingRepository.update(rating.id, rating);
+    return res;
   }
 
   async getAverageRating(id) {
@@ -184,9 +192,9 @@ class BookService {
   async getCurrentBookRating(bookId, userId) {
     const rating = await ratingRepository.findOne({
       where: {
-         user: {
-           id: userId,
-         },
+        user: {
+          id: userId,
+        },
         book: {
           id: bookId,
         },
@@ -201,59 +209,56 @@ class BookService {
 
 export default new BookService();
 
+//   async getFilteredTodos(todos: TodoType[],filter: string,userId: number): Promise<TodoType[]> {
+//     if (filter === 'all') {
+//       return todos;
+//     }
+//     return await todoRepository.find({
+//       where: {
+//         user: { id: userId },
+//         isCompleted: filter === 'active' ? false : true,
+//       },
+//     });
+//   }
 
+//   async toggleStatus(userId: number): Promise<TodoType[]> {
+//     const todos = await todoRepository.find({
+//       where: {
+//         user: { id: userId },
+//       },
+//     });
+//     const uncompleted = todos.some((todo) => !todo.isCompleted);
+//     todos.map((todo) => {
+//       todo = { ...todo, isCompleted: uncompleted ? true : false };
+//       todoRepository.save(todo);
+//       return todo;
+//     });
+//     return todos;
+//   }
 
+//   getCurrentTodo(todoId: number, userId: number) {
+//     return todoRepository.findOne({
+//       where: {
+//         id: todoId,
+//         user: {
+//           id: userId,
+//         },
+//       },
+//     });
+//   }
 
-    //   async getFilteredTodos(todos: TodoType[],filter: string,userId: number): Promise<TodoType[]> {
-    //     if (filter === 'all') {
-    //       return todos;
-    //     }
-    //     return await todoRepository.find({
-    //       where: {
-    //         user: { id: userId },
-    //         isCompleted: filter === 'active' ? false : true,
-    //       },
-    //     });
-    //   }
+//   deleteTodo(todoId: number) {
+//     todoRepository.delete(todoId);
+//   }
 
-    //   async toggleStatus(userId: number): Promise<TodoType[]> {
-    //     const todos = await todoRepository.find({
-    //       where: {
-    //         user: { id: userId },
-    //       },
-    //     });
-    //     const uncompleted = todos.some((todo) => !todo.isCompleted);
-    //     todos.map((todo) => {
-    //       todo = { ...todo, isCompleted: uncompleted ? true : false };
-    //       todoRepository.save(todo);
-    //       return todo;
-    //     });
-    //     return todos;
-    //   }
+//   async deleteAllTodo(userId: number) {
+//     todoRepository.delete({
+//       user: {
+//         id: userId,
+//       },
+//     });
+//   }
 
-    //   getCurrentTodo(todoId: number, userId: number) {
-    //     return todoRepository.findOne({
-    //       where: {
-    //         id: todoId,
-    //         user: {
-    //           id: userId,
-    //         },
-    //       },
-    //     });
-    //   }
-
-    //   deleteTodo(todoId: number) {
-    //     todoRepository.delete(todoId);
-    //   }
-
-    //   async deleteAllTodo(userId: number) {
-    //     todoRepository.delete({
-    //       user: {
-    //         id: userId,
-    //       },
-    //     });
-    //   }
-
-    //   updateTodo(todo: TodoType) {
-    //     return todoRepository.update(todo.id, todo);
-    //   }
+//   updateTodo(todo: TodoType) {
+//     return todoRepository.update(todo.id, todo);
+//   }

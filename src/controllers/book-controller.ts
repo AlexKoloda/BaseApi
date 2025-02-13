@@ -88,12 +88,10 @@ class BookController {
   }
 
   async getCurrentBookRating(req: Request, res: Response, next: NextFunction) {
-    try {
-     
+    try {     
       const bookId = req.query.id;
       const userId = req.user.id;
       const rating = await bookService.getCurrentBookRating(Number(bookId), Number(userId));
-      console.log(rating)
       res.status(200).json(rating);
     } catch (err) {
       next(err);

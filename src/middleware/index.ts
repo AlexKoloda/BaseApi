@@ -12,7 +12,6 @@ export const authenticateToken = async (
 ) => {
   try {
     const token = req.headers['authorization'];
-
     if (!token) {
       next(new UnAuthorized('Not authorization'));
     }
