@@ -1,9 +1,16 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import {Author} from "./Author";
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Author } from './Author';
 import { BookGenre } from './BookGenre';
 import Cart from './Cart';
 import { Rating } from './Rating';
 import { Comment } from './Comment';
+import Favorites from './Favorites';
 
 @Entity()
 export class Book {
@@ -47,5 +54,8 @@ export class Book {
   comments: Comment[];
 
   @OneToMany(() => Cart, (cart) => cart.user)
-    cart: Cart;
+  cart: Cart;
+
+  @OneToMany(() => Favorites, (favorites) => favorites.book)
+  favorites: Favorites[];
 }

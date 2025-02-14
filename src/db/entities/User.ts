@@ -1,7 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne} from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import Cart from './Cart';
 import { Rating } from './Rating';
 import { Comment } from './Comment';
+import Favorites from './Favorites';
 
 @Entity()
 export default class User {
@@ -35,5 +42,6 @@ export default class User {
   @OneToOne(() => Cart, (cart) => cart.user)
   cart: Cart;
 
-
+  @OneToOne(() => Favorites, (favorites) => favorites.user)
+  favorites: Favorites[];
 }
