@@ -29,9 +29,9 @@ class CartController {
       if (!req.user) {
         throw new NotFound('User not found');
       }
-      const cartItemId = req.params.id;
-      
-      const cart = await cartService.removeBook(cartItemId);
+      const cartItemId = req.query.id;
+      const userId = req.user.id;
+      const cart = await cartService.removeBook(cartItemId, userId);
       res.status(200).json(cart);
     } catch (err) {
       next(err);
