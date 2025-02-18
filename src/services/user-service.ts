@@ -11,7 +11,16 @@ class UserService {
   }
 
   getUser(userId: string) {
-    return userRepository.findOneBy({ id: userId });
+    return userRepository.findOne({ 
+      where: {
+        id: userId,
+      },
+      relations: {
+        cart: {
+          books: true
+        },
+    }
+    });
   }
 
   getUserPassword(userId: string) { 

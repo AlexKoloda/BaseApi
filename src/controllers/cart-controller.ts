@@ -14,6 +14,17 @@ class CartController {
     }
   }
 
+  async removeOneBook(req: Request, res: Response, next: NextFunction) {
+    try {
+      const bookId = req.body.id;
+      const userId = req.user.id;
+      const cart = await cartService.removeOneBook(userId, bookId);
+      res.status(200).json(cart);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async getBooks(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.user.id;

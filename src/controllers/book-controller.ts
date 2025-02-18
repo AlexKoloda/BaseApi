@@ -46,16 +46,12 @@ class BookController {
     }
   }
 
-  async getRecommendationBooks(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  async getRecommendationBooks(req: Request,res: Response,next: NextFunction) {
     try {
       const { genreId } = req.query;
       const { bookId } = req.query;
-      const books = await bookService.getRecBooks(genreId, bookId);
-      res.status(200).json(books);
+      const data = await bookService.getRecBooks(genreId, bookId);
+      res.status(200).json(data);
     } catch (err) {
       next(err);
     }

@@ -39,7 +39,7 @@ export default class User {
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];
 
-  @OneToOne(() => Cart, (cart) => cart.user)
+  @OneToMany(() => Cart, (cart) => cart.user)
   cart: Cart;
 
   @OneToOne(() => Favorites, (favorites) => favorites.user)

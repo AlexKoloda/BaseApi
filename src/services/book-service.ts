@@ -7,6 +7,7 @@ import { BookType } from '../types/types';
 import { bookGenreRepository } from '../repository/book-genre-repository';
 import { ratingRepository } from '../repository/rating-repository';
 import userService from './user-service';
+import commentService from './comment-service';
 
 class BookService {
   createBook(book: BookType) {
@@ -37,7 +38,7 @@ class BookService {
   }
 
   async getRecBooks(genreId, bookId) {
-    return bookRepository.find({
+  const books = await bookRepository.find({
       relations: {
         author: true,
         rating: true,
@@ -55,6 +56,10 @@ class BookService {
       take: 4,
       cache: true,
     });
+
+    return {
+      books: books,
+    }
   }
 
   async getBooks(page, genre, sort, price, search) {
@@ -128,6 +133,7 @@ class BookService {
       const searchBooks = await bookRepository.findAndCount({
         relations: {
           author: true,
+          rating: true,
         },
         where: [
           { title: Like(`%${search}%`) },
@@ -149,9 +155,17 @@ class BookService {
         genres: genres,
       };
     }
+    
+    const pagination = {
+      hasPrevPage: Boolean(page - 1),
+      hasNextPage: Boolean(limit <= (books[1] - from)),
+      totalPage: Math.ceil(books[1]/12),
+    }
+  
     return {
       books: books,
       genres: genres,
+      pagination: pagination,
     };
   }
 

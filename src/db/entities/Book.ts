@@ -53,7 +53,7 @@ export class Book {
   @OneToMany(() => Comment, (comment) => comment.book)
   comments: Comment[];
 
-  @OneToMany(() => Cart, (cart) => cart.user)
+  @OneToMany(() => Cart, (cart) => cart.books)
   cart: Cart;
 
   @OneToMany(() => Favorites, (favorites) => favorites.book)

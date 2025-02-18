@@ -14,5 +14,5 @@ export default class CartItem {
   user: User;
 
   @ManyToOne(() => Book, (book) => book.cart)
-  book: Book;
+  books: Book[];
 }

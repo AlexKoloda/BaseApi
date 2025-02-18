@@ -3,6 +3,7 @@ import userService from '../services/user-service';
 import { NotFound } from '../util/custom-errors';
 import { generateHashPassword } from '../util/hash-password';
 import base64Decode from '../util/convert64Base';
+import cartService from '../services/cart-service';
 
 class UserController {
   async getUsers(req: Request, res: Response, next: NextFunction) {
@@ -19,7 +20,8 @@ class UserController {
       if (!req.user) {
         throw new NotFound('User not found');
       }
-      res.status(200).json(req.user);
+      const user = await userService.getUser(req.user.id);
+      res.status(200).json({user: user });
     } catch (err) {
       next(err);
     }
