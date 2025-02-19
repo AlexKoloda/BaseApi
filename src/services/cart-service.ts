@@ -7,47 +7,50 @@ class CartService {
   async addBookInCart(userId, bookId) {
     const user = await userService.getUser(userId);
     const book = await bookService.getBook(bookId);
-    const bookInCart = await cartRepository.findOne({
-      where: {
-        user: userId,
-        books: bookId,
-      },
-    });
+
+    const bookInCart = await this.getBook(userId, bookId);
 
     if (bookInCart) {
-      return cartRepository.update(bookInCart.id, {
+      await cartRepository.update(bookInCart.id, {
         quantity: bookInCart.quantity + 1,
       });
+      if (book.numberBooksStock > 0) {
+        await bookRepository.update(bookId, {
+          numberBooksStock: book.numberBooksStock - bookInCart.quantity,
+        });
+      }
+      return this.getBooks(userId);
+    } else {
+      cartRepository.save({
+        user: userId,
+        books: bookId,
+      });
+
+      return this.getBooks(userId);
     }
-
-    const cart = await cartRepository.save({
-      user: userId,
-      books: bookId,
-    });
-
-    return cart;
   }
 
   async removeOneBook(userId, bookId) {
     const user = await userService.getUser(userId);
-    const bookInCart = await cartRepository.findOne({
-      where: {
-        user: user,
-        books: {
-          id: bookId,
-        },
-      },
-    });
+    const book = await bookService.getBook(bookId);
+
+    const bookInCart = await this.getBook(userId, bookId);
+
     if (bookInCart) {
-      return cartRepository.update(bookInCart.id, {
+      await cartRepository.update(bookInCart.id, {
         quantity: bookInCart.quantity - 1,
       });
+      await bookRepository.update(bookId, {
+        numberBooksStock: book.numberBooksStock + bookInCart.quantity,
+      });
+      return this.getBooks(userId);
     }
 
-    return cartRepository.save({
+     cartRepository.save({
       user: user,
       books: bookId,
     });
+    return this.getBooks(userId);
   }
 
   async getBooks(id) {
@@ -66,12 +69,26 @@ class CartService {
   }
 
   async removeBook(cartItemId, userId) {
-    console.log(cartItemId);
-    return cartRepository.delete({
+   cartRepository.delete({
       user: {
         id: userId,
       },
       id: cartItemId,
+    });
+
+    return this.getBooks(userId);
+  }
+
+  getBook(userId, bookId) {
+    return cartRepository.findOne({
+      where: {
+        user: {
+          id: userId,
+        },
+        books: {
+          id: bookId,
+        },
+      },
     });
   }
 }

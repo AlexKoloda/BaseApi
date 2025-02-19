@@ -8,7 +8,7 @@ class authService {
   }
 
   login(email: string) {
-    return userRepository.findOne({
+  return userRepository.findOne({
       where: {
         email: email,
       },
@@ -19,6 +19,9 @@ class authService {
         email: true,
         avatar: true,
       },
+      relations: {
+        cart: true,
+      }
     });
   }
 }
