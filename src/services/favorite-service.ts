@@ -11,10 +11,11 @@ class FavoritesService {
 
   async getBooks(id) {
     const user = await userService.getUser(id);
-
     return favoritesRepository.find({
       where: {
-        user: user,
+        user: {
+          id: user.id
+        },
       },
       relations: {
         book: {

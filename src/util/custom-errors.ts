@@ -1,3 +1,4 @@
+import { error } from 'console';
 import { StatusCodes } from 'http-status-codes';
 
 export type ErrorMessagesPaths = {
@@ -46,5 +47,11 @@ export class BadParams extends CustomError {
 export class NotFound extends CustomError {
   constructor(message: string, payload?: Record<string, unknown>) {
     super(message, StatusCodes.NOT_FOUND, payload);
+  }
+}
+
+export class AlreadyReported extends CustomError {
+  constructor(message: string, payload?: Record<string, unknown>,) {
+    super(message, 208, payload);
   }
 }

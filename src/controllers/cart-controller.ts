@@ -8,7 +8,7 @@ class CartController {
       const bookId = req.body.id;
       const userId = req.user.id;
       const cart = await cartService.addBookInCart(userId, bookId);
-      res.status(200).json(cart);
+      res.status(201).json(cart);
     } catch (err) {
       next(err);
     }

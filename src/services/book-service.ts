@@ -1,20 +1,16 @@
-// TODO Изменить на логику книг
-
-import { ArrayContains, Between, In, Like, Not, Tree } from 'typeorm';
+import { Between, In, Like, Not } from 'typeorm';
 import { bookRepository } from '../repository/book-repository';
 import { genreRepository } from '../repository/genre-repository';
 import { BookType } from '../types/types';
-import { bookGenreRepository } from '../repository/book-genre-repository';
 import { ratingRepository } from '../repository/rating-repository';
 import userService from './user-service';
-import commentService from './comment-service';
 
 class BookService {
   createBook(book: BookType) {
     return bookRepository.save(book);
   }
 
-  async getBook(id: string) {
+  async getBook(id) {
     const book = await bookRepository.findOne({
       relations: {
         author: true,
@@ -27,18 +23,20 @@ class BookService {
       },
       where: {
         id: id,
-      },     
-      
+      },
     });
-    if ( book && book.comments) {
-
-      book.comments.sort((a, b) => new Date(b.dateOfCreate).getDate() - new Date(a.dateOfCreate).getDate());
+    if (book && book.comments) {
+      book.comments.sort(
+        (a, b) =>
+          new Date(a.dateOfCreate).getDate() -
+          new Date(b.dateOfCreate).getDate()
+      );
     }
     return book;
   }
 
-  async getRecBooks(genreId, bookId) {
-  const books = await bookRepository.find({
+  async getRecBooks(genreId: string, bookId: string) {
+    const books = await bookRepository.find({
       relations: {
         author: true,
         rating: true,
@@ -59,7 +57,7 @@ class BookService {
 
     return {
       books: books,
-    }
+    };
   }
 
   async getBooks(page, genre, sort, price, search) {
@@ -103,7 +101,7 @@ class BookService {
       },
     });
 
-    const books = await bookRepository.findAndCount({
+    const books = await bookRepository.find({
       relations: {
         author: true,
         rating: true,
@@ -130,7 +128,7 @@ class BookService {
     });
 
     if (search) {
-      const searchBooks = await bookRepository.findAndCount({
+      const searchBooks = await bookRepository.find({
         relations: {
           author: true,
           rating: true,
@@ -155,13 +153,17 @@ class BookService {
         genres: genres,
       };
     }
-    
-    const pagination = {
+
+    const allBook = await bookRepository.findAndCount ({
+      skip: from,
+      take: limit,
+    })
+
+    const pagination = { 
       hasPrevPage: Boolean(page - 1),
-      hasNextPage: Boolean(limit <= (books[1] - from)),
-      totalPage: Math.ceil(books[1]/12),
-    }
-  
+      hasNextPage: Boolean(limit <= allBook[1] - from),
+      totalPage: Math.ceil(books.length < 12 ? 1 : allBook[1]/12),
+    };
     return {
       books: books,
       genres: genres,
@@ -191,7 +193,7 @@ class BookService {
     return res;
   }
 
-  async getAverageRating(id) {
+  async getAverageRating(id: string) {
     let averageRating = 0;
     const rating = await ratingRepository.find({
       where: { book: { id: id } },
@@ -203,7 +205,7 @@ class BookService {
     return Math.round(averageRating / rating.length);
   }
 
-  async getCurrentBookRating(bookId, userId) {
+  async getCurrentBookRating(bookId: string, userId: string) {
     const rating = await ratingRepository.findOne({
       where: {
         user: {
@@ -223,56 +225,3 @@ class BookService {
 
 export default new BookService();
 
-//   async getFilteredTodos(todos: TodoType[],filter: string,userId: number): Promise<TodoType[]> {
-//     if (filter === 'all') {
-//       return todos;
-//     }
-//     return await todoRepository.find({
-//       where: {
-//         user: { id: userId },
-//         isCompleted: filter === 'active' ? false : true,
-//       },
-//     });
-//   }
-
-//   async toggleStatus(userId: number): Promise<TodoType[]> {
-//     const todos = await todoRepository.find({
-//       where: {
-//         user: { id: userId },
-//       },
-//     });
-//     const uncompleted = todos.some((todo) => !todo.isCompleted);
-//     todos.map((todo) => {
-//       todo = { ...todo, isCompleted: uncompleted ? true : false };
-//       todoRepository.save(todo);
-//       return todo;
-//     });
-//     return todos;
-//   }
-
-//   getCurrentTodo(todoId: number, userId: number) {
-//     return todoRepository.findOne({
-//       where: {
-//         id: todoId,
-//         user: {
-//           id: userId,
-//         },
-//       },
-//     });
-//   }
-
-//   deleteTodo(todoId: number) {
-//     todoRepository.delete(todoId);
-//   }
-
-//   async deleteAllTodo(userId: number) {
-//     todoRepository.delete({
-//       user: {
-//         id: userId,
-//       },
-//     });
-//   }
-
-//   updateTodo(todo: TodoType) {
-//     return todoRepository.update(todo.id, todo);
-//   }

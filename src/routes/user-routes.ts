@@ -5,11 +5,11 @@ import { updatePasswordSchema, updateUserPhoto, updateUserSchema } from '../vali
 
 const userRouter = Router();
 
-userRouter.get('/all', userController.getUsers);
 userRouter.get('/', userController.getUser);
+userRouter.get('/all', userController.getUsers);
+userRouter.patch('/photo', userController.updateUserPhoto);
 userRouter.patch('/', validate(updateUserSchema), userController.updateUser);
 userRouter.patch('/password', validate(updatePasswordSchema), userController.updateUserPassword);
-userRouter.patch('/photo', userController.updateUserPhoto);
 userRouter.delete('/:id', userController.deleteUser);
 
 export default userRouter;

@@ -1,7 +1,7 @@
-import { bookRepository } from '../repository/book-repository';
-import { cartRepository } from '../repository/cart-repository';
-import bookService from './book-service';
-import userService from './user-service';
+import { bookRepository } from "../repository/book-repository";
+import { cartRepository } from "../repository/cart-repository";
+import bookService from "./book-service";
+import userService from "./user-service";
 
 class CartService {
   async addBookInCart(userId, bookId) {
@@ -20,14 +20,14 @@ class CartService {
         });
       }
       return this.getBooks(userId);
-    } else {
-      cartRepository.save({
-        user: userId,
-        books: bookId,
-      });
-
-      return this.getBooks(userId);
     }
+
+    const cart = await cartRepository.save({
+      user: userId,
+      books: bookId,
+    });
+
+    return this.getBooks(userId);
   }
 
   async removeOneBook(userId, bookId) {
@@ -46,17 +46,16 @@ class CartService {
       return this.getBooks(userId);
     }
 
-     cartRepository.save({
+    return cartRepository.save({
       user: user,
       books: bookId,
     });
-    return this.getBooks(userId);
   }
 
   async getBooks(id) {
     const user = await userService.getUser(id);
 
-    return cartRepository.find({
+    const books = await cartRepository.find({
       where: {
         user: user,
       },
@@ -66,10 +65,11 @@ class CartService {
         },
       },
     });
+    return books;
   }
 
   async removeBook(cartItemId, userId) {
-   cartRepository.delete({
+    cartRepository.delete({
       user: {
         id: userId,
       },
