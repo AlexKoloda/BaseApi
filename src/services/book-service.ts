@@ -162,7 +162,7 @@ class BookService {
     const pagination = { 
       hasPrevPage: Boolean(page - 1),
       hasNextPage: Boolean(limit <= allBook[1] - from),
-      totalPage: Math.ceil(books.length < 12 ? 1 : allBook[1]/12),
+      totalPage: Math.ceil(allBook[1]/12),
     };
     return {
       books: books,
