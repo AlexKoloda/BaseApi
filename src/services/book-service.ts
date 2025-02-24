@@ -127,6 +127,17 @@ class BookService {
       cache: true,
     });
 
+    const allBook = await bookRepository.findAndCount ({
+      skip: from,
+      take: limit,
+    })
+
+    const pagination = { 
+      hasPrevPage: Boolean(page - 1),
+      hasNextPage: Boolean(limit <= allBook[1] - from),
+      totalPage: Math.ceil(allBook[1]/12),
+    };
+
     if (search) {
       const searchBooks = await bookRepository.find({
         relations: {
@@ -151,19 +162,10 @@ class BookService {
       return {
         books: searchBooks,
         genres: genres,
+        pagination: pagination,
       };
     }
-
-    const allBook = await bookRepository.findAndCount ({
-      skip: from,
-      take: limit,
-    })
-
-    const pagination = { 
-      hasPrevPage: Boolean(page - 1),
-      hasNextPage: Boolean(limit <= allBook[1] - from),
-      totalPage: Math.ceil(allBook[1]/12),
-    };
+    
     return {
       books: books,
       genres: genres,
